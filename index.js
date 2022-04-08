@@ -38,9 +38,9 @@ let timer = null;
 
 
 /**
- *
+ * @param {string} [notice]
  */
-function queProcessor() {
+function queProcessor(notice = undefined) {
   if (messages.length > 0) {
     messages.forEach(
       /** @param {QueLogMessage} msg */
@@ -99,9 +99,10 @@ process.on('SIGINT', function() {
     if (timer) {
       clearTimeout(timer);
     }
-    queProcessor();
+    queProcessor('Finish tasks...');
   } catch (e) {
     console.error(e);
+    process.exit(1);
   }
   process.exit(0);
 })
