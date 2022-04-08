@@ -11,28 +11,53 @@ const config = pmx.initModule();
 console.log('Loaded new module pm2-telegram');
 console.log('Config:', config);
 
+/**
+ * @typedef PmLogMessage
+ * @param {string} type
+ * @param {string} message.process.namespace
+ * @param {string} message.process.name
+ * @param {string} message.process.rev
+ * @param {number} message.process.pm_id
+ * @param {string} message.data
+ * @param {timestamp} message.at
+ */
+
+/**
+ * @type {PmLogMessage[]}
+ */
 const messages = [];
 
 let timer = null;
 
+
+/**
+ *
+ */
 function queProcessor() {
-    //console.log(new Date(), config.module_name);
-    if (messages.length > 0) {
-        console.log(messages);
-        messages.length = 0;
-    }
-    timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
+  if (messages.length > 0) {
+    messages.forEach(
+      (msg) => {
+        msg.
+      },
+    );
+    messages.length = 0;
+  }
+  timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
 }
 
-function cbBusLogger(data) {
-    if (data.process.name !== config.module_name) {
-        messages.push(data.data);
-        console.log(data);
-    }
+function cbBusLogger(message, type) {
+  if (message.process.name !== config.module_name) {
+    console.log(type, message);
+    messages.push({
+      type,
+      message,
+    });
+    console.log(message);
+  }
 }
 
 // Start listening on the PM2 BUS
-pm2.launchBus(function(err, bus) {
-    bus.on('log:err', cbBusLogger);
-    timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
+pm2.launchBus(function (err, bus) {
+  bus.on('log:err', cbBusLogger, 'error');
+  timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
 });
