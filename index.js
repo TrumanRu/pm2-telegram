@@ -37,7 +37,7 @@ function queProcessor() {
   if (messages.length > 0) {
     messages.forEach(
       (msg) => {
-        msg.
+        console.log(msg.type, msg.data);
       },
     );
     messages.length = 0;
@@ -45,19 +45,22 @@ function queProcessor() {
   timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
 }
 
-function cbBusLogger(message, type) {
+/**
+ * @param {string} type
+ * @param {PmLogMessage} message
+ */
+function cbBusLogger(type, message) {
   if (message.process.name !== config.module_name) {
     console.log(type, message);
     messages.push({
       type,
       message,
     });
-    console.log(message);
   }
 }
 
 // Start listening on the PM2 BUS
 pm2.launchBus(function (err, bus) {
-  bus.on('log:err', cbBusLogger, 'error');
+  bus.on('log:err', (data) => cbBusLogger('error', data));
   timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
 });
