@@ -13,13 +13,12 @@ console.log('Config:', config);
 
 /**
  * @typedef PmLogMessage
- * @param {string} type
- * @param {string} message.process.namespace
- * @param {string} message.process.name
- * @param {string} message.process.rev
- * @param {number} message.process.pm_id
- * @param {string} message.data
- * @param {timestamp} message.at
+ * @param {string} process.namespace
+ * @param {string} process.name
+ * @param {string} process.rev
+ * @param {number} process.pm_id
+ * @param {string} data
+ * @param {timestamp} at
  */
 
 /**
