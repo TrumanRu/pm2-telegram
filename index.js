@@ -15,8 +15,10 @@ let timer = null;
 
 function timeProcessor() {
     //console.log(new Date(), config.module_name);
-    console.log(messages);
-    messages.length = 0;
+    if (messages.length > 0) {
+        console.log(messages);
+        messages.length = 0;
+    }
 }
 
 function cbLogBus(data) {
