@@ -30,7 +30,7 @@ function cbLogBus(data) {
 // Start listening on the PM2 BUS
 pm2.launchBus(function(err, bus) {
 
-    bus.on('log:error', cbLogBus);
+    bus.on('log:err', cbLogBus);
 
     timer = setInterval(timeProcessor, 10000);
 });

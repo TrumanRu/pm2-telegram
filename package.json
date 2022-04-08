@@ -23,5 +23,8 @@
   "dependencies": {
     "pm2": "^5.2.0",
     "pmx": "^1.2.0"
+  },
+  "config": {
+    "max_telegram_message_length": 4096
   }
 }
