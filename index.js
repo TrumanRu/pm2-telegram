@@ -50,7 +50,6 @@ function queProcessor() {
     );
     messages.length = 0;
   }
-  console.log('CONFIG', config);
   timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
 }
 
