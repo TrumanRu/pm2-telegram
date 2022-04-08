@@ -90,11 +90,18 @@ pm2.launchBus(function (err, bus) {
 
     timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
   } catch (e) {
-    throw new err;
+    throw new e;
   }
 });
 
 process.on('SIGINT', function() {
-  console.log('-= EXITING =-')
+  try {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    queProcessor();
+  } catch (e) {
+    console.error(e);
+  }
   process.exit(0);
 })
