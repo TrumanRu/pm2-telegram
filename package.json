@@ -25,6 +25,10 @@
     "pmx": "^1.2.0"
   },
   "config": {
+    "log": false,
+    "error": true,
+    "kill": true,
+    "exception": true,
     "max_telegram_message_length": 4096
   }
 }

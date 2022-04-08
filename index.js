@@ -13,17 +13,24 @@ console.log('Config:', config);
 
 /**
  * @typedef PmLogMessage
- * @param {string} type
- * @param {string} message.process.namespace
- * @param {string} message.process.name
- * @param {string} message.process.rev
- * @param {number} message.process.pm_id
- * @param {string} message.data
- * @param {timestamp} message.at
+ * @property {string} process.namespace
+ * @property {string} process.name
+ * @property {string} process.rev
+ * @property {number} process.pm_id
+ * @property {string} data
+ * @property {number} at
  */
 
 /**
- * @type {PmLogMessage[]}
+ * @typedef QueLogMessage
+ * @property {string} process
+ * @property {string} event
+ * @property {string} description
+ * @property {number} timestamp
+ */
+
+/**
+ * @type {QueLogMessage[]}
  */
 const messages = [];
 
@@ -36,8 +43,9 @@ let timer = null;
 function queProcessor() {
   if (messages.length > 0) {
     messages.forEach(
+      /** @param {QueLogMessage} msg */
       (msg) => {
-        console.log(msg.type, msg.data);
+        console.log(msg.type, msg.message);
       },
     );
     messages.length = 0;
@@ -46,21 +54,41 @@ function queProcessor() {
 }
 
 /**
- * @param {string} type
- * @param {PmLogMessage} message
+ * @param {QueLogMessage} message
  */
-function cbBusLogger(type, message) {
-  if (message.process.name !== config.module_name) {
-    console.log(type, message);
-    messages.push({
-      type,
-      message,
-    });
+function addMessage(message) {
+  if (message.process !== config.module_name) {
+    messages.push(message);
   }
 }
 
 // Start listening on the PM2 BUS
 pm2.launchBus(function (err, bus) {
-  bus.on('log:err', (data) => cbBusLogger('error', data));
-  timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
+  try {
+    if (config.error) bus.on('log:err', /** @param {PmLogMessage} data */(data) => addMessage({
+      process: data.process.name,
+      event: 'error',
+      description: data.data,
+      timestamp: data.at,
+    }));
+    if (config.log) bus.on('log:out', /** @param {PmLogMessage} data */(data) => addMessage({
+      process: data.process.name,
+      event: 'log',
+      description: data.data,
+      timestamp: data.at,
+    }));
+    if (config.kill) bus.on('pm2:kill', /** @param {Object} data */(data) => {
+      console.log(data);
+      addMessage({
+        process: 'PM2',
+        event: 'kill',
+        description: data.msg,
+        timestamp: Date.now(),
+      })
+    });
+
+    timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
+  } catch (e) {
+    throw new err;
+  }
 });
