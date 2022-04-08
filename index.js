@@ -67,19 +67,19 @@ function addMessage(message) {
 // Start listening on the PM2 BUS
 pm2.launchBus(function (err, bus) {
   try {
-    if (config.error) bus.on('log:err', /** @param {PmLogMessage} data */(data) => addMessage({
+    bus.on('log:err', /** @param {PmLogMessage} data */(data) => addMessage({
       process: data.process.name,
       event: 'error',
       description: data.data,
       timestamp: data.at,
     }));
-    if (config.log) bus.on('log:out', /** @param {PmLogMessage} data */(data) => addMessage({
+    bus.on('log:out', /** @param {PmLogMessage} data */(data) => addMessage({
       process: data.process.name,
       event: 'log',
       description: data.data,
       timestamp: data.at,
     }));
-    if (config.kill) bus.on('pm2:kill', /** @param {Object} data */(data) => {
+    bus.on('pm2:kill', /** @param {Object} data */(data) => {
       console.log(data);
       addMessage({
         process: 'PM2',
