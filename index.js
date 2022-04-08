@@ -59,6 +59,7 @@ function queProcessor() {
  */
 function addMessage(message) {
   if (message.process !== config.module_name) {
+    console.log('ADD', message);
     messages.push(message);
   }
 }
