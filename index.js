@@ -45,11 +45,12 @@ function queProcessor() {
     messages.forEach(
       /** @param {QueLogMessage} msg */
       (msg) => {
-        console.log(msg.type, msg.message);
+        console.log(new Date(msg.timestamp), msg.process, msg.event, msg.description);
       },
     );
     messages.length = 0;
   }
+  console.log('CONFIG', config);
   timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
 }
 
