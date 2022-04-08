@@ -1,0 +1,27 @@
+{
+  "name": "pm2-telegram",
+  "version": "0.0.1",
+  "description": "Telegram notifications for PM2 process manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrumanRu/pm2-telegram.git"
+  },
+  "keywords": [
+    "pm2",
+    "telegram"
+  ],
+  "author": "Ivan Tsybanenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TrumanRu/pm2-telegram/issues"
+  },
+  "homepage": "https://github.com/TrumanRu/pm2-telegram#readme",
+  "dependencies": {
+    "pm2": "^5.2.0",
+    "pmx": "^1.2.0"
+  }
+}
