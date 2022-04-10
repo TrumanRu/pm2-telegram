@@ -30,11 +30,8 @@ console.log('Config:', config);
  * @property {number} timestamp
  */
 
-/**
- * @type {QueLogMessage[]}
- */
+/** @type {QueLogMessage[]} */
 const messages = [];
-
 let timer = null;
 
 /**
@@ -46,7 +43,7 @@ function queProcessor(notice = undefined) {
     messages.forEach(
       /** @param {QueLogMessage} msg */
       (msg) => {
-        console.log(new Date(msg.timestamp), msg.process, msg.event, msg.description);
+        console.log(new Date(msg.timestamp).toLocaleTimeString(), msg.process, msg.event, msg.description);
 
       },
     );

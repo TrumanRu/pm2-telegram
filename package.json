@@ -29,6 +29,8 @@
     "log": false,
     "error": true,
     "kill": true,
-    "exception": true
+    "exception": true,
+    "bot_token": "",
+    "chat_id": ""
   }
 }
