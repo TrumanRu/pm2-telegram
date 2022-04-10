@@ -25,10 +25,10 @@
     "pmx": "^1.2.0"
   },
   "config": {
+    "title": "PM2-Telegram",
     "log": false,
     "error": true,
     "kill": true,
-    "exception": true,
-    "max_telegram_message_length": 4096
+    "exception": true
   }
 }

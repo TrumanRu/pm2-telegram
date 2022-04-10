@@ -1,6 +1,7 @@
 'use strict';
 
 const QUE_PROCESS_INTERVAL = 10000;
+const MAX_MESSAGE_LENGTH = 4096;
 
 const pm2 = require('pm2');
 const pmx = require('pmx');
@@ -8,7 +9,7 @@ const pmx = require('pmx');
 // Get the configuration from PM2
 const config = pmx.initModule();
 
-console.log('Loaded new module pm2-telegram');
+console.log('Loading module pm2-telegram');
 console.log('Config:', config);
 
 /**
@@ -36,16 +37,17 @@ const messages = [];
 
 let timer = null;
 
-
 /**
  * @param {string} [notice]
  */
 function queProcessor(notice = undefined) {
   if (messages.length > 0) {
+    if (notice) console.log(notice);
     messages.forEach(
       /** @param {QueLogMessage} msg */
       (msg) => {
         console.log(new Date(msg.timestamp), msg.process, msg.event, msg.description);
+
       },
     );
     messages.length = 0;
@@ -58,7 +60,6 @@ function queProcessor(notice = undefined) {
  */
 function addMessage(message) {
   if (message.process !== config.module_name) {
-    console.log('ADD', message);
     messages.push(message);
   }
 }
@@ -87,6 +88,7 @@ pm2.launchBus(function (err, bus) {
         timestamp: Date.now(),
       })
     });
+
 
     timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
   } catch (e) {
