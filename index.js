@@ -2,14 +2,37 @@
 
 const QUE_PROCESS_INTERVAL = 10000;
 const MAX_MESSAGE_LENGTH = 4096;
+const BR_LENGTH = '\n'.length;
 
 const pm2 = require('pm2');
 const pmx = require('pmx');
 
-// Get the configuration from PM2
-const config = pmx.initModule();
+const sendToTelegram = require('./modules/sendToTelegram');
 
 console.log('Loading module pm2-telegram');
+
+/**
+ * Get the configuration from PM2
+ * @property {string} title - name of the server/process
+ * @property {boolean} collate - collect multiple buffered messages into one message (with length less than Telegram max message length)
+ * @property {boolean} log - notify on console.log() event
+ * @property {boolean} error - notify on console.error() and console.warn() events
+ * @property {boolean} kill - notify on PM2 process kill
+ * @property {boolean} exception - notify on exception
+ * @property {string} bot_token - Telegram bot token
+ * @property {boolean} chat_id - Telegram chat id (use 'g' prefix gor group ig with leading '-' - 'g-1234567890')
+ * @property {string} module_name
+ */
+const config = pmx.initModule();
+
+/**
+ * Process group chat id prefixed by 'g-'
+ */
+let checkGroup = config.chat_id.match(/^g(-\d+)$/);
+if (checkGroup) {
+  config.chat_id = checkGroup[1];
+}
+
 console.log('Config:', config);
 
 /**
@@ -31,54 +54,130 @@ console.log('Config:', config);
  */
 
 /** @type {QueLogMessage[]} */
-const messages = [];
+const messagesQue = [];
 let timer = null;
 
 /**
- * @param {string} [notice]
+ * Send messages from que
+ * @param {boolean} [repeat]
  */
-function queProcessor(notice = undefined) {
-  if (messages.length > 0) {
-    if (notice) console.log(notice);
-    messages.forEach(
-      /** @param {QueLogMessage} msg */
-      (msg) => {
-        console.log(new Date(msg.timestamp).toLocaleTimeString(), msg.process, msg.event, msg.description);
+async function queProcessor(repeat = true) {
+  try {
+    if (!config.chat_id || !config.bot_token) {
+      console.warn(`'bot_token' and 'chat_id' are required parameters for pm2-telegram`);
+      return;
+    }
 
-      },
-    );
-    messages.length = 0;
+    if (messagesQue.length > 0) {
+      const titleStr = (config.title || 'PM-Telegram');
+      const titleHtml = `<b>${titleStr}</b>`;
+      const titleLength = titleStr.length;
+
+      let collector = '';
+      let collectorLength = 0;
+
+      const initCollector = () => {
+        collector = 0;
+        collectorLength = 0;
+      }
+
+      const dropCollector = async () => {
+        if (collectorLength > 0) {
+          await sendToTelegram(config.bot_token, config.chat_id, collector);
+          initCollector();
+        }
+      }
+
+      initCollector();
+
+      /** @type {QueLogMessage} */
+      let msg = undefined;
+      do {
+        msg = messagesQue.shift();
+        const msgAddText = `\n<u>${msg.process}</u> - <b>${msg.event}</b> - `;
+        const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 6;
+        const msgText = msgAddText + msg.description;
+        const msgLength = msgAddLength + msgText.length;
+
+        // send collector if overflow is awaiting
+        if (config.collate && collectorLength > 0 && titleLength + collectorLength + msgLength > MAX_MESSAGE_LENGTH) {
+          await dropCollector();
+        }
+        // collector is empty, current message is not send
+
+        if (titleLength + msgLength > MAX_MESSAGE_LENGTH) {
+          // split message if too long
+          let messageStart = titleHtml;
+          let messageEnd = '...';
+          let nextPos = 0;
+          let counter = 0;
+          do {
+            counter++;
+            let cutLength = MAX_MESSAGE_LENGTH - (counter === 1 ? titleLength : 0) - 3;
+            if (msgText - nextPos + 1 < MAX_MESSAGE_LENGTH) {
+              messageEnd = '';
+            }
+            const messageText = msgText.substring(nextPos, nextPos + cutLength);
+            nextPos = nextPos + cutLength;
+            await sendToTelegram(config.bot_token, config.chat_id, messageStart + messageText + messageEnd);
+            messageStart = '...';
+          } while (nextPos >= msgLength);
+        } else if (config.collate) {
+          if (collectorLength === 0) {
+            collector += titleHtml + msgText;
+            collectorLength += titleLength + msgLength;
+          } else {
+            collector += msgText;
+            collectorLength += msgLength;
+          }
+        } else {
+          await sendToTelegram(config.bot_token, config.chat_id, titleHtml + msgText);
+        }
+
+        //console.log(new Date(msg.timestamp).toLocaleTimeString(), msg.process, msg.event, msg.description);
+      } while (msg);
+      await dropCollector();
+    }
+  } catch (e) {
+    console.error(e);
   }
   timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
 }
 
 /**
+ * Add message to send buffer
  * @param {QueLogMessage} message
  */
-function addMessage(message) {
+function addMessageToQue(message) {
+  if (!config.chat_id || !config.bot_token) {
+    // do not collect without setup data
+    return;
+  }
   if (message.process !== config.module_name) {
-    messages.push(message);
+    messagesQue.push(message);
   }
 }
 
-// Start listening on the PM2 BUS
+/**
+ * Start listening on the PM2 BUS
+ */
 pm2.launchBus(function (err, bus) {
   try {
-    if (config.error) bus.on('log:err', /** @param {PmLogMessage} data */(data) => addMessage({
+    if (config.error) bus.on('log:err', /** @param {PmLogMessage} data */(data) => addMessageToQue({
       process: data.process.name,
       event: 'error',
       description: data.data,
       timestamp: data.at,
     }));
-    if (config.log) bus.on('log:out', /** @param {PmLogMessage} data */(data) => addMessage({
+    if (config.log) bus.on('log:out', /** @param {PmLogMessage} data */(data) => addMessageToQue({
       process: data.process.name,
       event: 'log',
       description: data.data,
       timestamp: data.at,
     }));
     if (config.kill) bus.on('pm2:kill', /** @param {Object} data */(data) => {
-      console.log(data);
-      addMessage({
+      console.log('KILL', data);
+      addMessageToQue({
         process: 'PM2',
         event: 'kill',
         description: data.msg,
@@ -86,19 +185,23 @@ pm2.launchBus(function (err, bus) {
       })
     });
 
-
     timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
   } catch (e) {
     throw new e;
   }
 });
 
-process.on('SIGINT', function() {
+/**
+ * Catch this module kill event
+ */
+process.on('SIGINT', async function() {
   try {
     if (timer) {
       clearTimeout(timer);
     }
-    queProcessor('Finish tasks...');
+    console.log('Finishing tasks...');
+    queProcessor(false)
+      .catch()
   } catch (e) {
     console.error(e);
     process.exit(1);

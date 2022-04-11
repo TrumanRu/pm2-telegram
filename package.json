@@ -26,6 +26,7 @@
   },
   "config": {
     "title": "PM2-Telegram",
+    "collate": true,
     "log": false,
     "error": true,
     "kill": true,
