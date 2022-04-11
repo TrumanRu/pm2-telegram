@@ -74,7 +74,7 @@ async function queProcessor(repeat = true) {
     }
 
     if (messagesQue.length > 0) {
-      const titleStr = (config.title || 'PM-Telegram');
+      const titleStr = config.title ? config.title.toString() : 'PM-Telegram';
       const titleHtml = `<b>${titleStr}</b>`;
       const titleLength = titleStr.length;
 
@@ -82,7 +82,7 @@ async function queProcessor(repeat = true) {
       let collectorLength = 0;
 
       const initCollector = () => {
-        collector = 0;
+        collector = '';
         collectorLength = 0;
       }
 
