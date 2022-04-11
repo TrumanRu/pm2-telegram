@@ -10,7 +10,7 @@ Thanks to:
 
 ### Create bot
 * create a telegram bot with Telegram's BotFather (look at [Telegram documentation](https://core.telegram.org/bots#creating-a-new-bot))
-* get BOT_TOKEN from BotFather answer
+* get BOT_TOKEN from BotFather's answer
 
 ### Get chat id
 * add the bot to a group if you want to send notifications to a group
@@ -40,7 +40,7 @@ const res = {
                 "text": "/test Hello bot!",
                 "entities": [{
                         "offset": 0,
-                        "length": 6,
+                        "length": 5,
                         "type": "bot_command"
                     }
                 ]
@@ -48,9 +48,9 @@ const res = {
     }]
 }
 ```
-* chat id is on `res.result.message.chat.id` property
+* CHAT_ID is on `res.result.message.chat.id` property
 
-> If you add another user(s) to the group this group's chat_id could be changed
+_Notice: If you'll add another user(s) to the group this group's chat_id could be changed_
 
 ### Start module
 * install the module: `pm2 install pm2-telegram`
