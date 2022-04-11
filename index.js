@@ -25,12 +25,17 @@ console.log('Loading module pm2-telegram');
  */
 const config = pmx.initModule();
 
-/**
- * Process group chat id prefixed by 'g-'
- */
-let checkGroup = config.chat_id.toString().match(/^g(-\d+)$/);
-if (checkGroup) {
-  config.chat_id = checkGroup[1];
+
+if (config.chat_id) {
+  /**
+   * Process group chat id prefixed by 'g-'
+   */
+  let checkGroup = config.chat_id.toString().match(/^g(-\d+)$/);
+  if (checkGroup) {
+    config.chat_id = checkGroup[1];
+  } else if (typeof config.chat_id !== 'string') {
+    config.chat_id = config.chat_id.toString();
+  }
 }
 
 console.log('Config:', config);
@@ -94,6 +99,7 @@ async function queProcessor(repeat = true) {
       let msg = undefined;
       do {
         msg = messagesQue.shift();
+        if (!msg) break;
         const msgAddText = `\n<u>${msg.process}</u> - <b>${msg.event}</b> - `;
         const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 6;
         const msgText = msgAddText + msg.description;
