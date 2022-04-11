@@ -16,8 +16,8 @@ Thanks to:
 * add the bot to a group if you want to send notifications to a group
 * send message from group to the bot: `/test Hello bot!` (use any command-like message started by slash)
 * open sent message at `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
-```json
-{
+```javascript
+const res = {
     "ok": true,
     "result": [{
             "update_id": 123456789,
@@ -48,18 +48,22 @@ Thanks to:
     }]
 }
 ```
+* chat id is on `res.result.message.chat.id` property
+
 > If you add another user(s) to the group this group's chat_id could be changed
 
 ### Start module
-* install the module: `pm2 start pm2-telegram`
+* install the module: `pm2 install pm2-telegram`
 * set the bot token: `pm2 set pm2-telegram:bot_token <BOT_TOKEN>`
 * set chat id: `pm2 set pm2-telegram:chat_id <CHAT_ID>`
-  - if a group's chat id prepend it by `g-` to isolate minus sigh
+  - for a group's chat id prepend it by `g-` to isolate minus sign
    eg:
   
      group chat _CHAT_ID_ = `-76543210` -> `g-76543210`
   
      personal chat _CHAT_ID_ = `123456789` -> `123456789`
 
-### Configure notifications
+### Configure notification scope
+* default scope: error (console.error and console.warn)
+
 -= will be described =-
