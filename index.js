@@ -28,7 +28,7 @@ const config = pmx.initModule();
 /**
  * Process group chat id prefixed by 'g-'
  */
-let checkGroup = config.chat_id.match(/^g(-\d+)$/);
+let checkGroup = config.chat_id.toString().match(/^g(-\d+)$/);
 if (checkGroup) {
   config.chat_id = checkGroup[1];
 }
