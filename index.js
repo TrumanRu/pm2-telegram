@@ -102,8 +102,7 @@ async function queProcessor(repeat = true) {
         if (!msg) break;
         const msgAddText = `\n<u>${msg.process}</u> - <b>${msg.event}</b> - `;
         const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 6;
-        console.log('MESSAGE', typeof msg.description, msg.description);
-        const msgText = msgAddText + msg.description.toString().replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+        const msgText = msgAddText + msg.description.replace('<', '&lt;').replace('>', '&gt;');
         const msgLength = msgAddLength + msgText.length;
 
         // send collector if overflow is awaiting
