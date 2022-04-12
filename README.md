@@ -64,6 +64,27 @@ _Notice: If you'll add another user(s) to the group this group's chat_id could b
      personal chat _CHAT_ID_ = `123456789` -> `123456789`
 
 ### Configure notification scope
-* default scope: error (console.error and console.warn)
+* to set option use `pm2 set pm2-telegram:<OPTION_NAME> <OPTION_VALUE>`
 
--= will be described =-
+#### Notification options
+
+| option name | type    | description                  | default value | example                               |
+|:------------|:--------|:-----------------------------|:--------------|:--------------------------------------|
+| error       | boolean | console .error() and .warn() | true          | `pm2 set pm2-telegram:error true`     |
+| log         | boolean | console.log()                | false         | `pm2 set pm2-telegram:log false`      |
+| kill        | boolean | kill PM2 process             | true          | `pm2 set pm2-telegram:kill true`      |
+| exception   | boolean | exception in PM2 process     | true          | `pm2 set pm2-telegram:exception true` |
+
+#### Module behavior options
+
+| option name | type    | description                                    | default value | example                             |
+|:------------|:--------|:-----------------------------------------------|:--------------|:------------------------------------|
+| collate     | boolean | collate short messages to one Telegram message | true          | `pm2 set pm2-telegram:collate true` |
+
+#### Module description options
+
+| option name | type   | description                                    | default value  | example                                   |
+|:------------|:-------|:-----------------------------------------------|:---------------|:------------------------------------------|
+| title       | string | messages title (could be used for server name) | 'PM2-Telegram' | `pm2 set pm2-telegram:title my-server-01` |
+
+
