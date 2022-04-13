@@ -6,10 +6,16 @@
 
 ## Functions
 
+* collect desired messages and send collected messages every 10 seconds
 * allow messages scope selection (errors, logs, kill events and exceptions)
 * truncate long messages (longer than 4096 character)
-* combine short messages (if the resulted big message shorter than 4096 characters)
+* combine short messages to avoid impact of Telegram messages frequency limitation (the resultant big message shorter than 4096 characters)
 * set message title (for use one Telegram bot on many inctances)
+
+###### Roadmap
+
+* *(under development)* option to split long messages to many continuos messages (choose truncate or split)
+* *(under development)* option to display real message's timestamp and set timestamp's format (HH:mm:ss.SSS)
 
 ## Setup
 
@@ -73,12 +79,10 @@
 
 ## Configure notifications
 
-* to set option use `pm2 set pm2-telegram:<OPTION_NAME> <OPTION_VALUE>`
+* to set any option use: `pm2 set pm2-telegram:<OPTION_NAME> <OPTION_VALUE>`
 
 #### Notification options
 
-* `error` - notify on error and warning messages (_console.error()_ and _console.warn()_) - default **true**
-* `log` - notify on simple log messages (_console.log()_) - default **false**
 
 | option name   | default | description                        |
 | :------------ | :------ | :--------------------------------- |
@@ -98,6 +102,8 @@
 | option name | default      | description                                        |
 | :---------- | :----------- | :------------------------------------------------- |
 | **title**   | PM2-Telegram | messages title (could be used for set server name) |
+
+
 
 ---
 
