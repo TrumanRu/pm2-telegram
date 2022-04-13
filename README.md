@@ -2,12 +2,9 @@
 
 # pm2-telegram
 
-Telegram notifications for PM2 process manager
+**Telegram notifications for PM2 process manager.**
 
-Thanks to:
-
-* [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification)
-* [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify)
+## Functions
 
 ## Configuration
 
@@ -23,8 +20,7 @@ Thanks to:
 * open sent message at `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
 
 ```javascript
-const res = {
-    "ok": true,
+{"ok": true,
     "result": [{
             "update_id": 123456789,
             "message": {
@@ -55,7 +51,7 @@ const res = {
 }
 ```
 
-* CHAT_ID is on `res.result.message.chat.id` property
+* CHAT_ID is on `result.message.chat.id` property
 
 _Notice: If you'll add another user(s) to the group this group's chat_id could be changed_
 
@@ -92,7 +88,15 @@ _Notice: If you'll add another user(s) to the group this group's chat_id could b
 
 #### Module description options
 
-| option name | default        | description                                    |
-| :---------- | :------------- | :--------------------------------------------- |
-| **title**   | 'PM2-Telegram' | messages title (could be used for server name) |
+| option name | default      | description                                        |
+| :---------- | :----------- | :------------------------------------------------- |
+| **title**   | PM2-Telegram | messages title (could be used for set server name) |
+
+---
+
+###### Thanks for some ideas to:
+
+* [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification)
+* [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify)
+  
 
