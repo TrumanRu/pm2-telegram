@@ -65,7 +65,7 @@ _Notice: If you'll add another user(s) to the group this group's chat_id could b
 * set the bot token: `pm2 set pm2-telegram:bot_token <BOT_TOKEN>`
 * set chat id: `pm2 set pm2-telegram:chat_id <CHAT_ID>`
   - for a group's chat id prepend it by `g-` to isolate minus sign, eg:
-    group chat _CHAT_ID_ = `-76543210` -> `g-76543210`
+    group chat _CHAT_ID_ = `-76543210` -> `g-76543210`<br>
     personal chat _CHAT_ID_ = `123456789` -> `123456789`
 
 ### Configure notifications
