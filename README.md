@@ -6,7 +6,12 @@
 
 ## Functions
 
-## Configuration
+* allow messages scope selection (errors, logs, kill events and exceptions)
+* truncate long messages (longer than 4096 character)
+* combine short messages (if the resulted big message shorter than 4096 characters)
+* set message title (for use one Telegram bot on many inctances)
+
+## Setup
 
 ### Create bot
 
@@ -20,7 +25,8 @@
 * open sent message at `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
 
 ```javascript
-{"ok": true,
+{
+    "ok": true,
     "result": [{
             "update_id": 123456789,
             "message": {
@@ -33,7 +39,7 @@
                     "username": "johndoe"
                 },
                 "chat": {
-                    "id": -76543210, // this is chat_id!
+                    "id": -76543210, // <- this is chat_id!
                     "title": "My_Test_Group",
                     "type": "group",
                     "all_members_are_administrators": false
@@ -53,18 +59,19 @@
 
 * CHAT_ID is on `result.message.chat.id` property
 
-_Notice: If you'll add another user(s) to the group this group's chat_id could be changed_
+> Notice: If you created group with only you and a bot but later you'll add second real user `chat.id` could be changed by Telegram. Check `chat.id` after add second real user!
 
 ### Start module
 
 * install the module: `pm2 install pm2-telegram`
 * set the bot token: `pm2 set pm2-telegram:bot_token <BOT_TOKEN>`
 * set chat id: `pm2 set pm2-telegram:chat_id <CHAT_ID>`
-  - for a group's chat id prepend it by `g-` to isolate minus sign, eg:
-    <br>group chat _CHAT_ID_ = `-76543210` -> `g-76543210`
-    <br>personal chat _CHAT_ID_ = `123456789` -> `123456789`
 
-### Configure notifications
+> - for a group's chat id prepend it by `g-` to isolate minus sign, eg:
+>   <br>group chat _CHAT_ID_ = `-76543210` -> `g-76543210`
+>   <br>personal chat _CHAT_ID_ = `123456789` -> `123456789`
+
+## Configure notifications
 
 * to set option use `pm2 set pm2-telegram:<OPTION_NAME> <OPTION_VALUE>`
 
@@ -84,7 +91,7 @@ _Notice: If you'll add another user(s) to the group this group's chat_id could b
 
 | option name | default | description                                    |
 | :-----------| :------ | :----------------------------------------------|
-| **collate** | true    | collate short messages to one Telegram message |
+| **collate** | true    | combine short messages to one Telegram message |
 
 #### Module description options
 
