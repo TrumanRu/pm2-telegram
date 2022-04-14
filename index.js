@@ -64,9 +64,9 @@ let timer = null;
 
 /**
  * Send messages from que
- * @param {boolean} [repeat]
+ * @param {boolean} [runAgain]
  */
-async function queProcessor(repeat = true) {
+async function queProcessor(runAgain = true) {
   try {
     if (!config.chat_id || !config.bot_token) {
       console.warn(`'bot_token' and 'chat_id' are required parameters for pm2-telegram`);
@@ -103,9 +103,11 @@ async function queProcessor(repeat = true) {
         const msgAddText = `\n<u>${msg.process}</u> - <b>${msg.event}</b> - `;
         const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 6;
         const msgText = msgAddText + msg.description
-          .replace('&', '&amp;')
-          .replace('<', '&lt;')
-          .replace('>', '&gt;');
+          ? msg.description
+            .replace('&', '&amp;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;')
+          : 'no description';
         const msgLength = msgAddLength + msgText.length;
 
         // send collector if overflow is awaiting
@@ -150,7 +152,9 @@ async function queProcessor(repeat = true) {
   } catch (e) {
     console.error(e);
   }
-  timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
+  if (runAgain) {
+    timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
+  }
 }
 
 /**
@@ -194,12 +198,11 @@ pm2.launchBus(function (err, bus) {
       })
     });
     if (config.exception) bus.on('process:exception', /** @param {Object} data */(data) => {
-      console.log('EXCEPTION', data);
       addMessageToQue({
         process: data.process.name,
         event: 'exception',
-        description: JSON.stringify(data.msg),
-        timestamp: Date.now(),
+        description: JSON.stringify(data.data),
+        timestamp: data.at,
       })
     });
     timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
@@ -218,7 +221,7 @@ process.on('SIGINT', async function() {
     }
     console.log('Finishing tasks...');
     queProcessor(false)
-      .catch()
+      .catch((e) => console.error(e));
   } catch (e) {
     console.error(e);
     process.exit(1);
