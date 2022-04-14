@@ -193,7 +193,15 @@ pm2.launchBus(function (err, bus) {
         timestamp: Date.now(),
       })
     });
-
+    if (config.exception) bus.on('process:exception', /** @param {Object} data */(data) => {
+      console.log('EXCEPTION', data);
+      addMessageToQue({
+        process: data.process.name,
+        event: 'exception',
+        description: JSON.stringify(data.msg),
+        timestamp: Date.now(),
+      })
+    });
     timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
   } catch (e) {
     throw new e;

@@ -1,27 +1,28 @@
-[![npm package](https://img.shields.io/npm/v/pm2-telegram?logo=npm&style=flat-square)](https://www.npmjs.com/package/pm2-telegram)
+[![npm package](https://img.shields.io/npm/v/pm2-telegram?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/pm2-telegram) [![GitHub issues](https://img.shields.io/github/issues/TrumanRu/pm2-telegram?logo=github&label=GitHub%20issues&style=for-the-badge)](https://github.com/TrumanRu/pm2-telegram/issues)
 
 # pm2-telegram
 
-**Telegram notifications for PM2 process manager.**
+**Telegram notifications for PM2 process manager**
 
 ## Functions
 
-* collect desired messages and send collected messages every 10 seconds
-* allow messages scope selection (errors, logs, kill events and exceptions)
-* truncate long messages (longer than 4096 character)
+* collect desired messages to buffer then send collected messages every 10 seconds
+* allow messages scope selection (errors, logs, exceptions and kill events)
+* truncate long messages (longer than Telegram limitation 4096 characters)
 * combine short messages to avoid impact of Telegram messages frequency limitation (the resultant big message shorter than 4096 characters)
-* set message title (for use one Telegram bot on many inctances)
+* set message title for instance (for use one Telegram bot on many inctances)
 
 ###### Roadmap
 
-* *(under development)* option to split long messages to many continuos messages (choose truncate or split)
+* *(under development)* option to split long messages to many continuos messages (you should choose truncate or split big messages)
 * *(under development)* option to display real message's timestamp and set timestamp's format (HH:mm:ss.SSS)
+* *(under development)* control messages buffer overflow, reset it and send buffer overflow notification
 
 ## Setup
 
 ### Create bot
 
-* create a telegram bot with Telegram's BotFather (look at [Telegram documentation](https://core.telegram.org/bots#creating-a-new-bot))
+* create a Telegram bot with Telegram's BotFather (look at [Telegram documentation](https://core.telegram.org/bots#creating-a-new-bot))
 * get BOT_TOKEN from BotFather's answer
 
 ### Get chat id
@@ -38,11 +39,11 @@
             "message": {
                 "message_id": 1,
                 "from": {
-                    "id": 322223322,
+                    "id": 223322223322,
                     "is_bot": false,
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "username": "johndoe"
+                    "first_name": "Hildur",
+                    "last_name": "Bock",
+                    "username": "frokenbock"
                 },
                 "chat": {
                     "id": -76543210, // <- this is chat_id!
@@ -83,7 +84,6 @@
 
 #### Notification options
 
-
 | option name   | default | description                        |
 | :------------ | :------ | :--------------------------------- |
 | **error**     | true    | console.error() and console.warn() |
@@ -94,7 +94,7 @@
 #### Module behavior options
 
 | option name | default | description                                    |
-| :-----------| :------ | :----------------------------------------------|
+| :---------- | :------ | :--------------------------------------------- |
 | **collate** | true    | combine short messages to one Telegram message |
 
 #### Module description options
@@ -103,13 +103,27 @@
 | :---------- | :----------- | :------------------------------------------------- |
 | **title**   | PM2-Telegram | messages title (could be used for set server name) |
 
+#### Example
 
+```bash
+pm2 install pm2-telegram
+pm2 set pm2-telegram:title VeryImportantServer
+pm2 set pm2-telegram:bot_token 223322223322:ABCDefghIJKLmnop12345rStUvWxYz67890
+pm2 set pm2-telegram:chat_id g-76543210
+pm2 set pm2-telegram:error true
+pm2 set pm2-telegram:log true
+```
 
 ---
 
-###### Thanks for some ideas to:
+## Notices
 
-* [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification)
-* [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify)
-  
+#### Bugs and features
+
+Please write to [GitHub Issues](https://github.com/TrumanRu/pm2-telegram/issues)
+
+#### Thanks for some ideas to:
+
+* [shubhroshekhar](https://github.com/shubhroshekhar/) (for [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification))
+* [korolyov88](https://github.com/korolyov88/pm2-telegram-notify) (for [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify))
 
