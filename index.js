@@ -198,11 +198,10 @@ pm2.launchBus(function (err, bus) {
       })
     });
     if (config.exception) bus.on('process:exception', /** @param {Object} data */(data) => {
-      console.log('EXCEPTION', data);
       addMessageToQue({
         process: data.process.name,
         event: 'exception',
-        description: JSON.stringify(data.message),
+        description: JSON.stringify(data.data),
         timestamp: data.at,
       })
     });
