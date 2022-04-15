@@ -8,14 +8,14 @@
 
 * collect desired messages to buffer then send collected messages every 10 seconds
 * allow messages scope selection (errors, logs, exceptions and kill events)
-* truncate long messages (longer than Telegram limitation 4096 characters)
-* combine short messages to avoid impact of Telegram messages frequency limitation (the resultant big message shorter than 4096 characters)
-* set message title for instance (for use one Telegram bot on many instances)
+* truncate long messages (longer than Telegram limitation 4096 characters) to avoid send error
+* combine short messages to one message (the resultant big message shorter than 4096 characters) to avoid impact of Telegram messages frequency limitation (see: [Telegram messages limit for a group](https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this))
+* set message title for _pm2-telegram_ instance for distinguish messages from one Telegram bot installed on many instances (default server's hostname)
 
 #### Roadmap
 
 * *(under development)* option to split long messages to many continuous messages (you should choose truncate or split big messages)
-* *(under development)* option to display real message's timestamp and set timestamp's format (HH:mm:ss.SSS)
+* *(under development)* option to display real message's timestamp and set timestamp format (HH:mm:ss.SSS)
 * *(under development)* control messages buffer overflow, reset it and send buffer overflow notification
 
 ## Setup
@@ -75,8 +75,8 @@
 * set chat id: `pm2 set pm2-telegram:chat_id <CHAT_ID>`
 
 > - for a group's chat id prepend it by `g-` to isolate minus sign, eg:
->   <br>group chat _CHAT_ID_ = `-76543210` -> `g-76543210`
->   <br>personal chat _CHAT_ID_ = `123456789` -> `123456789`
+>   `<br>`group chat _CHAT_ID_ = `-76543210` -> `g-76543210`
+>   `<br>`personal chat _CHAT_ID_ = `123456789` -> `123456789`
 
 ## Configure notifications
 
@@ -84,8 +84,8 @@
 
 #### Notification options
 
-| option name   | default | description                        |
-| :------------ | :------ | :--------------------------------- |
+| option name         | default | description                        |
+| :------------------ | :------ | :--------------------------------- |
 | **error**     | true    | console.error() and console.warn() |
 | **log**       | false   | console.log()                      |
 | **kill**      | true    | kill PM2 process                   |
@@ -93,15 +93,15 @@
 
 #### Module behavior options
 
-| option name | default | description                                    |
-| :---------- | :------ | :--------------------------------------------- |
+| option name       | default | description                                    |
+| :---------------- | :------ | :--------------------------------------------- |
 | **collate** | true    | combine short messages to one Telegram message |
 
 #### Module description options
 
-| option name | default      | description                                        |
-| :---------- | :----------- | :------------------------------------------------- |
-| **title**   | PM2-Telegram | messages title (could be used for set server name) |
+| option name     | default             | description                                        |
+| :-------------- | :------------------ | :------------------------------------------------- |
+| **title** | _server hostname_ | messages title (could be used for set server name) |
 
 #### Example
 
@@ -114,16 +114,30 @@ pm2 set pm2-telegram:error true
 pm2 set pm2-telegram:log true
 ```
 
+## Upgrade module to the latest version
+
+```bash
+pm2 install pm2-telegram@latest
+```
+
 ---
+
 ## Releases
 
+#### 0.1.11
+
+* set default `title` as local server hostname
+
 #### 0.1.10
+
 * update documentation
 
 #### 0.1.9
+
 * fix: message title missed notification type (error, exception etc.) and messages delimiters (new lines)
 
 #### 0.1.8
+
 * fix: error on send exception message (message is 'undefined')
 
 ## Notices

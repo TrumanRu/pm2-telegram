@@ -6,6 +6,7 @@ const BR_LENGTH = '\n'.length;
 
 const pm2 = require('pm2');
 const pmx = require('pmx');
+const os = require('os');
 
 const sendToTelegram = require('./modules/sendToTelegram');
 
@@ -27,15 +28,19 @@ const config = pmx.initModule();
 
 
 if (config.chat_id) {
-  /**
-   * Process group chat id prefixed by 'g-'
-   */
+  /** Process group chat id prepended by 'g-' */
   let checkGroup = config.chat_id.toString().match(/^g(-\d+)$/);
   if (checkGroup) {
     config.chat_id = checkGroup[1];
   } else if (typeof config.chat_id !== 'string') {
     config.chat_id = config.chat_id.toString();
   }
+}
+
+if (config.title) {
+  config.title = config.title.toString();
+} else {
+  config.title = os.hostname();
 }
 
 console.log('Config:', config);
@@ -74,9 +79,8 @@ async function queProcessor(runAgain = true) {
     }
 
     if (messagesQue.length > 0) {
-      const titleStr = config.title ? config.title.toString() : 'PM-Telegram';
-      const titleHtml = `<b>${titleStr}</b>`;
-      const titleLength = titleStr.length;
+      const titleHtml = `<b>${config.title}</b>`;
+      const titleLength = config.title.length;
 
       let collector = '';
       let collectorLength = 0;
@@ -144,11 +148,9 @@ async function queProcessor(runAgain = true) {
         } else {
           await sendToTelegram(config.bot_token, config.chat_id, titleHtml + msgText);
         }
-
-        //console.log(new Date(msg.timestamp).toLocaleTimeString(), msg.process, msg.event, msg.description);
       } while (msg);
       await dropCollector();
-    }
+    } // if (messagesQue.length > 0)
   } catch (e) {
     console.error(e);
   }
@@ -220,8 +222,7 @@ process.on('SIGINT', async function() {
       clearTimeout(timer);
     }
     console.log('Finishing tasks...');
-    queProcessor(false)
-      .catch((e) => console.error(e));
+    await queProcessor(false);
   } catch (e) {
     console.error(e);
     process.exit(1);
