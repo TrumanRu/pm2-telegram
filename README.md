@@ -10,11 +10,11 @@
 * allow messages scope selection (errors, logs, exceptions and kill events)
 * truncate long messages (longer than Telegram limitation 4096 characters)
 * combine short messages to avoid impact of Telegram messages frequency limitation (the resultant big message shorter than 4096 characters)
-* set message title for instance (for use one Telegram bot on many inctances)
+* set message title for instance (for use one Telegram bot on many instances)
 
-###### Roadmap
+#### Roadmap
 
-* *(under development)* option to split long messages to many continuos messages (you should choose truncate or split big messages)
+* *(under development)* option to split long messages to many continuous messages (you should choose truncate or split big messages)
 * *(under development)* option to display real message's timestamp and set timestamp's format (HH:mm:ss.SSS)
 * *(under development)* control messages buffer overflow, reset it and send buffer overflow notification
 
@@ -107,7 +107,7 @@
 
 ```bash
 pm2 install pm2-telegram
-pm2 set pm2-telegram:title VeryImportantServer
+pm2 set pm2-telegram:title OnTheRoof
 pm2 set pm2-telegram:bot_token 223322223322:ABCDefghIJKLmnop12345rStUvWxYz67890
 pm2 set pm2-telegram:chat_id g-76543210
 pm2 set pm2-telegram:error true
@@ -115,6 +115,10 @@ pm2 set pm2-telegram:log true
 ```
 
 ---
+## Releases
+
+#### 0.1.8
+* fix error on send exception message (message is 'undefined')
 
 ## Notices
 
