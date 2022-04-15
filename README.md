@@ -117,8 +117,14 @@ pm2 set pm2-telegram:log true
 ---
 ## Releases
 
+#### 0.1.10
+* update documentation
+
+#### 0.1.9
+* fix: message title missed notification type (error, exception etc.) and messages delimiters (new lines)
+
 #### 0.1.8
-* fix error on send exception message (message is 'undefined')
+* fix: error on send exception message (message is 'undefined')
 
 ## Notices
 
