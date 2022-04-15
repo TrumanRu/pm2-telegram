@@ -124,13 +124,17 @@ pm2 install pm2-telegram@latest
 
 ## Releases
 
+#### 0.1.12
+
+* documentation update
+
 #### 0.1.11
 
-* set default `title` as local server hostname
+* set default `title` as local server hostname (don's forget to call `pm2 set pm2-telegram:title` to reset stored in PM2 title variable)
 
 #### 0.1.10
 
-* update documentation
+* documentation update
 
 #### 0.1.9
 
