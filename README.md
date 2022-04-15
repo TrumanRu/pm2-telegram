@@ -9,7 +9,7 @@
 * collect desired messages to buffer then send collected messages every 10 seconds
 * allow messages scope selection (errors, logs, exceptions and kill events)
 * truncate long messages (longer than Telegram limitation 4096 characters) to avoid send error
-* combine short messages to one message (the resultant big message shorter than 4096 characters) to avoid impact of Telegram messages frequency limitation (see: [Telegram messages limit for a group](https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this))
+* combine short messages to one message (the resultant big message shorter than 4096 characters) to avoid impact of Telegram messages frequency limitation (see: [My bot is hitting limits, how do I avoid this?](https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this))
 * set message title for _pm2-telegram_ instance for distinguish messages from one Telegram bot installed on many instances (default server's hostname)
 
 #### Roadmap
@@ -124,13 +124,17 @@ pm2 install pm2-telegram@latest
 
 ## Releases
 
+#### 0.1.12
+
+* documentation update
+
 #### 0.1.11
 
-* set default `title` as local server hostname
+* set default `title` as local server hostname (don's forget to call `pm2 set pm2-telegram:title` to reset stored in PM2 title variable)
 
 #### 0.1.10
 
-* update documentation
+* documentation update
 
 #### 0.1.9
 

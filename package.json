@@ -1,6 +1,6 @@
 {
   "name": "pm2-telegram",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Telegram notifications for PM2 process manager",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "pmx": "^1.2.0"
   },
   "config": {
-    "title": "PM2-Telegram",
+    "title": "",
     "collate": true,
     "log": false,
     "error": true,
