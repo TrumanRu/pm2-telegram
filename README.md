@@ -10,7 +10,7 @@
 * allow messages scope selection (errors, logs, exceptions and kill events)
 * truncate long messages (longer than Telegram limitation 4096 characters) to avoid send error
 * combine short messages to one message (the resultant big message shorter than 4096 characters) to avoid impact of Telegram messages frequency limitation (see: [My bot is hitting limits, how do I avoid this?](https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this))
-* set message title for _pm2-telegram_ instance for distinguish messages from one Telegram bot installed on many instances (default server's hostname)
+* set message title for _pm2-telegram_ instance to distinguish messages from one Telegram bot installed on many instances (default is server hostname)
 
 #### Roadmap
 
@@ -58,7 +58,7 @@
                         "length": 5,
                         "type": "bot_command"
                     }
-                ]
+                ]npm i pm2-telegram
             }
     }]
 }
@@ -84,8 +84,8 @@
 
 #### Notification options
 
-| option name         | default | description                        |
-| :------------------ | :------ | :--------------------------------- |
+| option name   | default | description                        |
+| :-------------- | :-------- | :----------------------------------- |
 | **error**     | true    | console.error() and console.warn() |
 | **log**       | false   | console.log()                      |
 | **kill**      | true    | kill PM2 process                   |
@@ -93,15 +93,15 @@
 
 #### Module behavior options
 
-| option name       | default | description                                    |
-| :---------------- | :------ | :--------------------------------------------- |
+| option name | default | description                                    |
+| :---------- | :------ | :--------------------------------------------- |
 | **collate** | true    | combine short messages to one Telegram message |
 
 #### Module description options
 
-| option name     | default             | description                                        |
-| :-------------- | :------------------ | :------------------------------------------------- |
-| **title** | _server hostname_ | messages title (could be used for set server name) |
+| option name | default              | description                                        |
+| :---------- | :------------------- | :------------------------------------------------- |
+| **title**   | _server common name_ | messages title (could be used for set server name) |
 
 #### Example
 
@@ -124,25 +124,13 @@ pm2 install pm2-telegram@latest
 
 ## Releases
 
-#### 0.1.12
-
-* documentation update
-
-#### 0.1.11
-
-* set default `title` as local server hostname (don's forget to call `pm2 set pm2-telegram:title` to reset stored in PM2 title variable)
-
-#### 0.1.10
-
-* documentation update
-
-#### 0.1.9
-
-* fix: message title missed notification type (error, exception etc.) and messages delimiters (new lines)
-
-#### 0.1.8
-
-* fix: error on send exception message (message is 'undefined')
+| version | changes                                                                                                                                             |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.1.12  | • documentation update                                                                                                                             |
+| 0.1.11  | • _feature:_ set default `title` as local server hostname (don's forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable) |
+| 0.1.10  | • documentation update                                                                                                                             |
+| 0.1.9   | • _fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)                                         |
+| 0.1.8   | • _fix:_ error on send exception message (message is 'undefined')                                                                                   |
 
 ## Notices
 
@@ -152,6 +140,6 @@ Please write to [GitHub Issues](https://github.com/TrumanRu/pm2-telegram/issues)
 
 #### Thanks for some ideas to:
 
-* [shubhroshekhar](https://github.com/shubhroshekhar/) (for [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification))
-* [korolyov88](https://github.com/korolyov88/pm2-telegram-notify) (for [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify))
+* [shubhroshekhar](https://github.com/shubhroshekhar/) (author of [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification))
+* [korolyov88](https://github.com/korolyov88/pm2-telegram-notify) (author of [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify))
 
