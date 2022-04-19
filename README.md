@@ -101,7 +101,7 @@
 
 | option name | default              | description                                        |
 | :---------- | :------------------- | :------------------------------------------------- |
-| **title**   | _server common name_ | messages title (could be used for set server name) |
+| **title**   | _server host name_ | messages title (could be used for set server name) |
 
 #### Example
 
