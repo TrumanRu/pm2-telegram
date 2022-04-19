@@ -124,13 +124,13 @@ pm2 install pm2-telegram@latest
 
 ## Releases
 
-| version | changes                                                                                                                                             |
-| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0.1.12  | • documentation update                                                                                                                             |
-| 0.1.11  | • _feature:_ set default `title` as local server hostname (don's forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable) |
-| 0.1.10  | • documentation update                                                                                                                             |
-| 0.1.9   | • _fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)                                         |
-| 0.1.8   | • _fix:_ error on send exception message (message is 'undefined')                                                                                   |
+| version    | changes                                                                                                                                             |
+|------------| ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0.1.12** | • documentation update                                                                                                                             |
+| **0.1.11** | • _feature:_ set default `title` as local server hostname (don's forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable) |
+| **0.1.10** | • documentation update                                                                                                                             |
+| **0.1.9**  | • _fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)                                         |
+| **0.1.8**  | • _fix:_ error on send exception message (message is 'undefined')                                                                                   |
 
 ## Notices
 
