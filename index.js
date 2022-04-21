@@ -108,9 +108,10 @@ async function queProcessor(runAgain = true) {
         const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 6;
         const msgText = msgAddText + (msg.description
           ? msg.description
-            .replace('&', '&amp;')
-            .replace('<', '&lt;')
-            .replace('>', '&gt;')
+            .replace('%', '%25')
+            .replace('&', '%26')
+            .replace('<', '%3c')
+            .replace('>', '%3e')
           : 'no description');
         console.log('TEXT', msgText);
         const msgLength = msgAddLength + msgText.length;
