@@ -110,8 +110,8 @@ async function queProcessor(runAgain = true) {
           ? msg.description
             .replace('%', '%25')
             .replace('&', '%26')
-            .replace('<', '%3c')
-            .replace('>', '%3e')
+            .replace('<', '〈')
+            .replace('>', '〉')
           : 'no description');
         console.log('TEXT', msgText);
         const msgLength = msgAddLength + msgText.length;
