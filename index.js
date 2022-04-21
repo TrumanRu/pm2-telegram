@@ -104,8 +104,8 @@ async function queProcessor(runAgain = true) {
       do {
         msg = messagesQue.shift();
         if (!msg) break;
-        const msgAddText = `\n\n*${msg.process}* - **${msg.event}** - `;
-        const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 6;
+        const msgAddText = `\n\n*${msg.process}* - **${msg.event}**`;
+        const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 3;
         const msgText = msgAddText + (msg.description
           ? msg.description
             // .replace('%', '%25', /g/)
@@ -182,13 +182,13 @@ pm2.launchBus(function (err, bus) {
   try {
     if (config.error) bus.on('log:err', /** @param {PmLogMessage} data */(data) => addMessageToQue({
       process: data.process.name,
-      event: 'error',
+      event: 'ERROR',
       description: data.data,
       timestamp: data.at,
     }));
     if (config.log) bus.on('log:out', /** @param {PmLogMessage} data */(data) => addMessageToQue({
       process: data.process.name,
-      event: 'log',
+      event: 'LOG',
       description: data.data,
       timestamp: data.at,
     }));
@@ -196,7 +196,7 @@ pm2.launchBus(function (err, bus) {
       console.log('KILL', data);
       addMessageToQue({
         process: 'PM2',
-        event: 'kill',
+        event: 'KILL',
         description: data.msg,
         timestamp: Date.now(),
       })
@@ -204,7 +204,7 @@ pm2.launchBus(function (err, bus) {
     if (config.exception) bus.on('process:exception', /** @param {Object} data */(data) => {
       addMessageToQue({
         process: data.process.name,
-        event: 'exception',
+        event: 'EXCEPTION',
         description: JSON.stringify(data.data),
         timestamp: data.at,
       })
