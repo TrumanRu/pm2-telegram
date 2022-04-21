@@ -7,7 +7,7 @@ const http = require('https');
  * @returns {Promise<unknown>}
  */
 module.exports = async function sendToTelegram(botToken, chatId, message) {
-  const postData = `chat_id=${chatId}&text=${message}&parse_mode=HTML`;
+  const postData = `chat_id=${chatId}&text=${message}&parse_mode=Markdown`;
   /** @Type {https.RequestOptions} */
   const options = {
     hostname: 'api.telegram.org',

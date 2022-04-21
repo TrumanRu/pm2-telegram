@@ -79,7 +79,7 @@ async function queProcessor(runAgain = true) {
     }
 
     if (messagesQue.length > 0) {
-      const titleHtml = `<b>${config.title}</b>`;
+      const titleHtml = `**${config.title}**`;
       const titleLength = config.title.length;
 
       let collector = '';
@@ -104,14 +104,14 @@ async function queProcessor(runAgain = true) {
       do {
         msg = messagesQue.shift();
         if (!msg) break;
-        const msgAddText = `\n<u>${msg.process}</u> - <b>${msg.event}</b> - `;
+        const msgAddText = `\n\n*${msg.process}* - **${msg.event}** - `;
         const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 6;
         const msgText = msgAddText + (msg.description
           ? msg.description
-            .replace('%', '%25', /g/)
-            .replace('&', '%26', /g/)
-            .replace('<', '〈', /g/)
-            .replace('>', '〉', /g/)
+            // .replace('%', '%25', /g/)
+            // .replace('&', '%26', /g/)
+            // .replace('<', '〈', /g/)
+            // .replace('>', '〉', /g/)
           : 'no description');
         console.log('TEXT', msgText);
         const msgLength = msgAddLength + msgText.length;
