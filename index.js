@@ -79,7 +79,7 @@ async function queProcessor(runAgain = true) {
     }
 
     if (messagesQue.length > 0) {
-      const titleHtml = `**${config.title}**`;
+      const titleHtml = `*${config.title}*`;
       const titleLength = config.title.length;
 
       let collector = '';
@@ -104,7 +104,7 @@ async function queProcessor(runAgain = true) {
       do {
         msg = messagesQue.shift();
         if (!msg) break;
-        const msgAddText = `\n*${msg.process}* - **${msg.event}**`;
+        const msgAddText = `\n*${msg.process}* - ${msg.event}`;
         const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 3;
         const msgText = msgAddText + (msg.description
           ? msg.description
