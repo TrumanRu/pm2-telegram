@@ -47,7 +47,7 @@
                 },
                 "chat": {
                     "id": -76543210, // <- this is chat_id!
-                    "title": "My_Test_Group",
+                    "title": "Buns_Eaters",
                     "type": "group",
                     "all_members_are_administrators": false
                 },
@@ -58,7 +58,7 @@
                         "length": 5,
                         "type": "bot_command"
                     }
-                ]npm i pm2-telegram
+                ]
             }
     }]
 }
@@ -66,7 +66,7 @@
 
 * CHAT_ID is on `result.message.chat.id` property
 
-> Notice: If you created group with only you and a bot but later you'll add second real user `chat.id` could be changed by Telegram. Check `chat.id` after add second real user!
+> Notice: If you created group with only you and a bot, but later you'll add second real user `chat.id` could be changed by Telegram. Check `chat.id` after add second real user!
 
 ### Start module
 
@@ -85,7 +85,7 @@
 #### Notification options
 
 | option name   | default | description                        |
-| :-------------- | :-------- | :----------------------------------- |
+| :------------ | :------ |:-----------------------------------|
 | **error**     | true    | console.error() and console.warn() |
 | **log**       | false   | console.log()                      |
 | **kill**      | true    | kill PM2 process                   |

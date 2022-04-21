@@ -112,6 +112,7 @@ async function queProcessor(runAgain = true) {
             .replace('<', '&lt;')
             .replace('>', '&gt;')
           : 'no description');
+        console.log('TEXT', msgText);
         const msgLength = msgAddLength + msgText.length;
 
         // send collector if overflow is awaiting
