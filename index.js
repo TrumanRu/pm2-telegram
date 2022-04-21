@@ -104,8 +104,8 @@ async function queProcessor(runAgain = true) {
       do {
         msg = messagesQue.shift();
         if (!msg) break;
-        const msgAddText = `\n*${msg.process}* - ${msg.event}`;
-        const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 3;
+        const msgAddText = `\n*${msg.process}* - ${msg.event}\n`;
+        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + BR_LENGTH;
         const msgText = msgAddText + (msg.description
           ? msg.description
             // .replace('%', '%25', /g/)
