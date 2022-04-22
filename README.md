@@ -15,9 +15,9 @@
 
 #### Examples
 ###### Unformatted
-![](./docs/message-unformatted.jpg "Unformatted message")
+![](https://raw.githubusercontent.com/TrumanRu/cdn/HEAD/pm2-telegram/message-unformatted.jpg "Unformatted message")
 ###### Formatted
-![](./docs/message-formatted.jpg "Formatted message")
+![](https://raw.githubusercontent.com/TrumanRu/cdn/HEAD/pm2-telegram/message-formatted.jpg "Formatted message")
 
 #### Roadmap
 
@@ -73,7 +73,7 @@
 
 * CHAT_ID is on `result.message.chat.id` property
 
-> Notice: If you created group with only you and a bot, but later you'll add second real user `chat.id` could be changed by Telegram. Check `chat.id` after add second real user!
+> Notice: If you created a group with only you and a bot, but later you'll add a second real user `chat.id` could be changed by Telegram. Check `chat.id` after add second real user!
 
 ### Start module
 
@@ -81,7 +81,7 @@
 * set the bot token: `pm2 set pm2-telegram:bot_token <BOT_TOKEN>`
 * set chat id: `pm2 set pm2-telegram:chat_id <CHAT_ID>`
 
-> - for a group's chat id prepend it by `g-` to isolate minus sign, eg:
+> For a group's chat id prepend it by `g-` to isolate minus sign, eg:
 >   <br>group chat _CHAT_ID_ = `-76543210` -> `g-76543210`
 >   <br>personal chat _CHAT_ID_ = `123456789` -> `123456789`
 
@@ -145,6 +145,8 @@ Welcome to [GitHub Issues](https://github.com/TrumanRu/pm2-telegram/issues)!
 
 | version    | changes                                                                                                                                                                                 |
 |------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **0.2.3**  | • _docs_: remove documentation images from project                                                                                                                                      |
+| **0.2.2**  | • _docs_: documentation corrections                                                                                                                                                     |
 | **0.2.1**  | • _docs_: minimize example's image files size                                                                                                                                           |
 | **0.2.0**  | • _feature_: add option `text_format` to format notification messages<br/>• _fix_: mistaken truncate messages on `&` character                                                          |
 | **0.1.12** | • _docs_: documentation update                                                                                                                                                          |
