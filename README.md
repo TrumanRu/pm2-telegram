@@ -99,19 +99,20 @@
 
 #### Module description options
 
-| option name | default              | description                                        |
-| :---------- | :------------------- | :------------------------------------------------- |
-| **title**   | _server host name_ | messages title (could be used for set server name) |
+| option name     | default            | description                                        |
+|:----------------|:-------------------|:---------------------------------------------------|
+| **title**       | _server host name_ | messages title (could be used for set server name) |
+| **text_format** | _undefined_        | set 'Markdown' to format messages                  |
 
 #### Example
 
 ```bash
-pm2 install pm2-telegram
 pm2 set pm2-telegram:title OnTheRoof
 pm2 set pm2-telegram:bot_token 223322223322:ABCDefghIJKLmnop12345rStUvWxYz67890
 pm2 set pm2-telegram:chat_id g-76543210
 pm2 set pm2-telegram:error true
-pm2 set pm2-telegram:log true
+pm2 set pm2-telegram:text_format Markdown
+pm2 install pm2-telegram
 ```
 
 ## Upgrade module to the latest version
@@ -124,13 +125,14 @@ pm2 install pm2-telegram@latest
 
 ## Releases
 
-| version    | changes                                                                                                                                             |
-|------------| ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0.1.12** | • documentation update                                                                                                                             |
-| **0.1.11** | • _feature:_ set default `title` as local server hostname (don's forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable) |
-| **0.1.10** | • documentation update                                                                                                                             |
-| **0.1.9**  | • _fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)                                         |
-| **0.1.8**  | • _fix:_ error on send exception message (message is 'undefined')                                                                                   |
+| version    | changes                                                                                                                                                                                 |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **0.2.0**  | • _fix_: mistaken truncate messages on `&` character<br/>• _feature_: add option `text_format` to format notification messages                                                          |
+| **0.1.12** | • documentation update                                                                                                                                                                  |
+| **0.1.11** | • _feature:_ set default `title` as local server hostname (on upgrade don't forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable) |
+| **0.1.10** | • documentation update                                                                                                                                                                  |
+| **0.1.9**  | • _fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)                                                                      |
+| **0.1.8**  | • _fix:_ error on send exception message (message is 'undefined')                                                                                                                       |
 
 ## Notices
 

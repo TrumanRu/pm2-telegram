@@ -22,6 +22,7 @@ console.log('Loading module pm2-telegram');
  * @property {boolean} exception - notify on exception
  * @property {string} bot_token - Telegram bot token
  * @property {boolean} chat_id - Telegram chat id (use 'g' prefix gor group ig with leading '-' - 'g-1234567890')
+ * @property {string} text_format - set 'Markdown' to format send messages
  * @property {string} module_name
  */
 const config = pmx.initModule();
@@ -43,7 +44,28 @@ if (config.title) {
   config.title = os.hostname();
 }
 
+const isMarkdown = config.text_format && config.text_format === 'Markdown';
+
+let BOLD_START = ''
+let BOLD_END = '';
+let ITALIC_START = ''
+let ITALIC_END = '';
+let CODE_START = '';
+let CODE_END = '';
+
+if (isMarkdown) {
+  BOLD_START = '**';
+  BOLD_END = '**';
+  ITALIC_START = '__'
+  ITALIC_END = '__';
+  CODE_START = '`';
+  CODE_END = '`';
+}
+
 console.log('Config:', config);
+
+const titleHtml = `${BOLD_START}${config.title}${BOLD_END}`;
+const titleLength = config.title.length;
 
 /**
  * @typedef PmLogMessage
@@ -79,8 +101,6 @@ async function queProcessor(runAgain = true) {
     }
 
     if (messagesQue.length > 0) {
-      const titleHtml = `*${config.title}*`;
-      const titleLength = config.title.length;
 
       let collector = '';
       let collectorLength = 0;
@@ -104,16 +124,9 @@ async function queProcessor(runAgain = true) {
       do {
         msg = messagesQue.shift();
         if (!msg) break;
-        const msgAddText = `\n*${msg.process}* - ${msg.event}\n`;
-        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + BR_LENGTH;
-        const msgText = msgAddText + (msg.description
-          ? msg.description
-            // .replace('%', '%25', /g/)
-            // .replace('&', '%26', /g/)
-            // .replace('<', '〈', /g/)
-            // .replace('>', '〉', /g/)
-          : 'no description');
-        console.log('TEXT', msgText);
+        const msgAddText = `\n${CODE_START}${msg.process}${CODE_END} - ${BOLD_START}${msg.event}${BOLD_END} - `;
+        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + 3;
+        const msgText = msgAddText + msg.description ? msg.description : 'no description';
         const msgLength = msgAddLength + msgText.length;
 
         // send collector if overflow is awaiting
@@ -136,7 +149,12 @@ async function queProcessor(runAgain = true) {
             }
             const messageText = msgText.substring(nextPos, nextPos + cutLength);
             nextPos = nextPos + cutLength;
-            await sendToTelegram(config.bot_token, config.chat_id, messageStart + messageText + messageEnd);
+            await sendToTelegram(
+              config.bot_token,
+              config.chat_id,
+              messageStart + messageText + messageEnd,
+              isMarkdown ? 'Markdown' : undefined,
+            );
             messageStart = '...';
           } while (nextPos >= msgLength);
         } else if (config.collate) {
@@ -182,13 +200,13 @@ pm2.launchBus(function (err, bus) {
   try {
     if (config.error) bus.on('log:err', /** @param {PmLogMessage} data */(data) => addMessageToQue({
       process: data.process.name,
-      event: 'ERROR',
+      event: 'error',
       description: data.data,
       timestamp: data.at,
     }));
     if (config.log) bus.on('log:out', /** @param {PmLogMessage} data */(data) => addMessageToQue({
       process: data.process.name,
-      event: 'LOG',
+      event: 'log',
       description: data.data,
       timestamp: data.at,
     }));
@@ -196,7 +214,7 @@ pm2.launchBus(function (err, bus) {
       console.log('KILL', data);
       addMessageToQue({
         process: 'PM2',
-        event: 'KILL',
+        event: 'kill',
         description: data.msg,
         timestamp: Date.now(),
       })
@@ -204,7 +222,7 @@ pm2.launchBus(function (err, bus) {
     if (config.exception) bus.on('process:exception', /** @param {Object} data */(data) => {
       addMessageToQue({
         process: data.process.name,
-        event: 'EXCEPTION',
+        event: 'exception',
         description: JSON.stringify(data.data),
         timestamp: data.at,
       })

@@ -1,6 +1,6 @@
 {
   "name": "pm2-telegram",
-  "version": "0.1.12",
+  "version": "0.2.0",
   "description": "Telegram notifications for PM2 process manager",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "kill": true,
     "exception": true,
     "bot_token": "",
-    "chat_id": ""
+    "chat_id": "",
+    "text_format": ""
   }
 }
