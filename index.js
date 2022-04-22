@@ -67,7 +67,7 @@ if (isMarkdown) {
 console.log('Config:', config);
 
 const titleHtml = `${BOLD_START}${config.title}${BOLD_END}`;
-const titleLength = config.title.length;
+const titleLength = config.title.length + (isMarkdown ? 0 : BOLD_START.length + BOLD_END.length);
 
 /**
  * @typedef PmLogMessage
@@ -127,7 +127,8 @@ async function queProcessor(runAgain = true) {
         msg = messagesQue.shift();
         if (!msg) break;
         const msgAddText = `\n${ITALIC_START}${msg.process}${ITALIC_END} - ${BOLD_START}${msg.event}${BOLD_END} - `;
-        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + 3;
+        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + 3
+          + (isMarkdown ? 0 : ITALIC_START.length + ITALIC_END.length + BOLD_START.length + BOLD_END.length);
         const msgText = msgAddText + (msg.description ? msg.description : 'no description');
         const msgLength = msgAddLength + msgText.length;
 

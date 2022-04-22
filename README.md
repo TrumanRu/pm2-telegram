@@ -100,7 +100,7 @@
 #### Module behavior options
 
 | option name | default | description                                    |
-| :---------- | :------ | :--------------------------------------------- |
+|-------------|---------|------------------------------------------------|
 | **collate** | true    | combine short messages to one Telegram message |
 
 #### Module description options
@@ -133,7 +133,7 @@ pm2 install pm2-telegram@latest
 
 | version    | changes                                                                                                                                                                                        |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **0.2.0**  | <li>_feature_: add option `text_format` to format notification messages</li><br/><li>_fix_: mistaken truncate messages on `&` character</li>                                                   |
+| **0.2.0**  | <li>_feature_: add option `text_format` to format notification messages</li><li>_fix_: mistaken truncate messages on `&` character</li>                                                        |
 | **0.1.12** | <li>documentation update</li>                                                                                                                                                                  |
 | **0.1.11** | <li>_feature:_ set default `title` as local server hostname (on upgrade don't forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable)</li> |
 | **0.1.10** | <li>documentation update</li>                                                                                                                                                                  |
