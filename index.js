@@ -52,6 +52,7 @@ let ITALIC_START = ''
 let ITALIC_END = '';
 let CODE_START = '[';
 let CODE_END = ']';
+let MESSAGE_FORMAT = undefined;
 
 if (isMarkdown) {
   BOLD_START = '**';
@@ -60,6 +61,7 @@ if (isMarkdown) {
   ITALIC_END = '__';
   CODE_START = '`';
   CODE_END = '`';
+  MESSAGE_FORMAT = 'Markdown';
 }
 
 console.log('Config:', config);
@@ -153,7 +155,7 @@ async function queProcessor(runAgain = true) {
               config.bot_token,
               config.chat_id,
               messageStart + messageText + messageEnd,
-              isMarkdown ? 'Markdown' : 'NONE',
+              MESSAGE_FORMAT
             );
             messageStart = '...';
           } while (nextPos >= msgLength);
@@ -166,7 +168,7 @@ async function queProcessor(runAgain = true) {
             collectorLength += msgLength;
           }
         } else {
-          await sendToTelegram(config.bot_token, config.chat_id, titleHtml + msgText);
+          await sendToTelegram(config.bot_token, config.chat_id, titleHtml + msgText, MESSAGE_FORMAT);
         }
       } while (msg);
       await dropCollector();
