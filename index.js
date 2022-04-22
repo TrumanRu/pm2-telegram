@@ -55,10 +55,10 @@ let CODE_END = ']';
 let MESSAGE_FORMAT = undefined;
 
 if (isMarkdown) {
-  BOLD_START = '**';
-  BOLD_END = '**';
-  ITALIC_START = '__'
-  ITALIC_END = '__';
+  BOLD_START = '*';
+  BOLD_END = '*';
+  ITALIC_START = '_'
+  ITALIC_END = '_';
   CODE_START = '`';
   CODE_END = '`';
   MESSAGE_FORMAT = 'Markdown';
