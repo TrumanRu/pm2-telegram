@@ -12,7 +12,7 @@ module.exports = async function sendToTelegram(botToken, chatId, message, textFo
   if (textFormat === 'Markdown' || textFormat === 'HTML') {
     postData += `&parse_mode=${textFormat}`;
   }
-  console.log('TELEGRAM_SEND_DEBUG', postData, ...arguments);
+  console.log('TELEGRAM_SEND_DEBUG', postData, '\bARGUMENTS', ...arguments);
   /** @Type {https.RequestOptions} */
   const options = {
     hostname: 'api.telegram.org',

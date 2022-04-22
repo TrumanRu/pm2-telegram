@@ -153,7 +153,7 @@ async function queProcessor(runAgain = true) {
               config.bot_token,
               config.chat_id,
               messageStart + messageText + messageEnd,
-              isMarkdown ? 'Markdown' : undefined,
+              isMarkdown ? 'Markdown' : 'NONE',
             );
             messageStart = '...';
           } while (nextPos >= msgLength);
