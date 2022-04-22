@@ -4,10 +4,15 @@ const http = require('https');
  * @param {string} botToken
  * @param {string} chatId
  * @param {string} message
+ * @param {'Markdown'|'HTML'} textFormat
  * @returns {Promise<unknown>}
  */
-module.exports = async function sendToTelegram(botToken, chatId, message) {
-  const postData = `chat_id=${chatId}&text=${message}&parse_mode=HTML`;
+module.exports = async function sendToTelegram(botToken, chatId, message, textFormat = undefined) {
+  let postData = `chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+  if (textFormat === 'Markdown' || textFormat === 'HTML') {
+    postData += `&parse_mode=${textFormat}`;
+  }
+  console.log('TELEGRAM_SEND_DEBUG', postData, '\nARGUMENTS', ...arguments);
   /** @Type {https.RequestOptions} */
   const options = {
     hostname: 'api.telegram.org',
@@ -49,7 +54,7 @@ module.exports = async function sendToTelegram(botToken, chatId, message) {
         reject(e);
       });
 
-      // Write data to request body
+      // write data to request body
       req.write(postData);
       req.end();
     } catch (e) {

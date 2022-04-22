@@ -22,6 +22,7 @@ console.log('Loading module pm2-telegram');
  * @property {boolean} exception - notify on exception
  * @property {string} bot_token - Telegram bot token
  * @property {boolean} chat_id - Telegram chat id (use 'g' prefix gor group ig with leading '-' - 'g-1234567890')
+ * @property {string} text_format - set 'Markdown' to format send messages
  * @property {string} module_name
  */
 const config = pmx.initModule();
@@ -43,7 +44,30 @@ if (config.title) {
   config.title = os.hostname();
 }
 
+const isMarkdown = config.text_format && config.text_format === 'Markdown';
+
+let BOLD_START = '['
+let BOLD_END = ']';
+let ITALIC_START = ''
+let ITALIC_END = '';
+let CODE_START = '[';
+let CODE_END = ']';
+let MESSAGE_FORMAT = undefined;
+
+if (isMarkdown) {
+  BOLD_START = '*';
+  BOLD_END = '*';
+  ITALIC_START = '_'
+  ITALIC_END = '_';
+  CODE_START = '`';
+  CODE_END = '`';
+  MESSAGE_FORMAT = 'Markdown';
+}
+
 console.log('Config:', config);
+
+const titleHtml = `${BOLD_START}${config.title}${BOLD_END}`;
+const titleLength = config.title.length + (isMarkdown ? 0 : BOLD_START.length + BOLD_END.length);
 
 /**
  * @typedef PmLogMessage
@@ -79,8 +103,6 @@ async function queProcessor(runAgain = true) {
     }
 
     if (messagesQue.length > 0) {
-      const titleHtml = `<b>${config.title}</b>`;
-      const titleLength = config.title.length;
 
       let collector = '';
       let collectorLength = 0;
@@ -92,7 +114,7 @@ async function queProcessor(runAgain = true) {
 
       const dropCollector = async () => {
         if (collectorLength > 0) {
-          await sendToTelegram(config.bot_token, config.chat_id, collector);
+          await sendToTelegram(config.bot_token, config.chat_id, collector, MESSAGE_FORMAT);
           initCollector();
         }
       }
@@ -104,14 +126,10 @@ async function queProcessor(runAgain = true) {
       do {
         msg = messagesQue.shift();
         if (!msg) break;
-        const msgAddText = `\n<u>${msg.process}</u> - <b>${msg.event}</b> - `;
-        const msgAddLength = BR_LENGTH + msg.process.length + msg.event.length + 6;
-        const msgText = msgAddText + (msg.description
-          ? msg.description
-            .replace('&', '&amp;')
-            .replace('<', '&lt;')
-            .replace('>', '&gt;')
-          : 'no description');
+        const msgAddText = `\n${ITALIC_START}${msg.process}${ITALIC_END} - ${BOLD_START}${msg.event}${BOLD_END} - `;
+        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + 3
+          + (isMarkdown ? 0 : ITALIC_START.length + ITALIC_END.length + BOLD_START.length + BOLD_END.length);
+        const msgText = msgAddText + (msg.description ? msg.description : 'no description');
         const msgLength = msgAddLength + msgText.length;
 
         // send collector if overflow is awaiting
@@ -134,7 +152,7 @@ async function queProcessor(runAgain = true) {
             }
             const messageText = msgText.substring(nextPos, nextPos + cutLength);
             nextPos = nextPos + cutLength;
-            await sendToTelegram(config.bot_token, config.chat_id, messageStart + messageText + messageEnd);
+            await sendToTelegram(config.bot_token, config.chat_id, messageStart + messageText + messageEnd, MESSAGE_FORMAT);
             messageStart = '...';
           } while (nextPos >= msgLength);
         } else if (config.collate) {
@@ -146,7 +164,7 @@ async function queProcessor(runAgain = true) {
             collectorLength += msgLength;
           }
         } else {
-          await sendToTelegram(config.bot_token, config.chat_id, titleHtml + msgText);
+          await sendToTelegram(config.bot_token, config.chat_id, titleHtml + msgText, MESSAGE_FORMAT);
         }
       } while (msg);
       await dropCollector();

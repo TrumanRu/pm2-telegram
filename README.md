@@ -10,7 +10,13 @@
 * allow messages scope selection (errors, logs, exceptions and kill events)
 * truncate long messages (longer than Telegram limitation 4096 characters) to avoid send error
 * combine short messages to one message (the resultant big message shorter than 4096 characters) to avoid impact of Telegram messages frequency limitation (see: [My bot is hitting limits, how do I avoid this?](https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this))
-* set message title for _pm2-telegram_ instance for distinguish messages from one Telegram bot installed on many instances (default server's hostname)
+* set message title for _pm2-telegram_ instance to distinguish messages from one Telegram bot installed on many instances (default is server hostname)
+* format messages for better viewing
+
+#### Examples
+
+![](./docs/message-unformatted.png "Unformatted message")
+![](./docs/message-formatted.png "Formatted message")
 
 #### Roadmap
 
@@ -47,7 +53,7 @@
                 },
                 "chat": {
                     "id": -76543210, // <- this is chat_id!
-                    "title": "My_Test_Group",
+                    "title": "Buns_Eaters",
                     "type": "group",
                     "all_members_are_administrators": false
                 },
@@ -66,7 +72,7 @@
 
 * CHAT_ID is on `result.message.chat.id` property
 
-> Notice: If you created group with only you and a bot but later you'll add second real user `chat.id` could be changed by Telegram. Check `chat.id` after add second real user!
+> Notice: If you created group with only you and a bot, but later you'll add second real user `chat.id` could be changed by Telegram. Check `chat.id` after add second real user!
 
 ### Start module
 
@@ -84,8 +90,8 @@
 
 #### Notification options
 
-| option name         | default | description                        |
-| :------------------ | :------ | :--------------------------------- |
+| option name   | default | description                        |
+| :------------ | :------ |:-----------------------------------|
 | **error**     | true    | console.error() and console.warn() |
 | **log**       | false   | console.log()                      |
 | **kill**      | true    | kill PM2 process                   |
@@ -93,25 +99,26 @@
 
 #### Module behavior options
 
-| option name       | default | description                                    |
-| :---------------- | :------ | :--------------------------------------------- |
+| option name | default | description                                    |
+|-------------|---------|------------------------------------------------|
 | **collate** | true    | combine short messages to one Telegram message |
 
 #### Module description options
 
-| option name     | default             | description                                        |
-| :-------------- | :------------------ | :------------------------------------------------- |
-| **title** | _server hostname_ | messages title (could be used for set server name) |
+| option name     | default            | description                                                                                  |
+|:----------------|:-------------------|:---------------------------------------------------------------------------------------------|
+| **title**       | _server host name_ | messages title (could be used for set server name)                                           |
+| **text_format** | _undefined_        | set 'Markdown' to format messages (be carefully if your messages could be Markdown formatted |
 
 #### Example
 
 ```bash
-pm2 install pm2-telegram
 pm2 set pm2-telegram:title OnTheRoof
 pm2 set pm2-telegram:bot_token 223322223322:ABCDefghIJKLmnop12345rStUvWxYz67890
 pm2 set pm2-telegram:chat_id g-76543210
 pm2 set pm2-telegram:error true
-pm2 set pm2-telegram:log true
+pm2 set pm2-telegram:text_format Markdown
+pm2 install pm2-telegram
 ```
 
 ## Upgrade module to the latest version
@@ -124,25 +131,14 @@ pm2 install pm2-telegram@latest
 
 ## Releases
 
-#### 0.1.12
-
-* documentation update
-
-#### 0.1.11
-
-* set default `title` as local server hostname (don's forget to call `pm2 set pm2-telegram:title` to reset stored in PM2 title variable)
-
-#### 0.1.10
-
-* documentation update
-
-#### 0.1.9
-
-* fix: message title missed notification type (error, exception etc.) and messages delimiters (new lines)
-
-#### 0.1.8
-
-* fix: error on send exception message (message is 'undefined')
+| version    | changes                                                                                                                                                                                        |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **0.2.0**  | <li>_feature_: add option `text_format` to format notification messages</li><li>_fix_: mistaken truncate messages on `&` character</li>                                                        |
+| **0.1.12** | <li>documentation update</li>                                                                                                                                                                  |
+| **0.1.11** | <li>_feature:_ set default `title` as local server hostname (on upgrade don't forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable)</li> |
+| **0.1.10** | <li>documentation update</li>                                                                                                                                                                  |
+| **0.1.9**  | <li>_fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)</li>                                                                      |
+| **0.1.8**  | <li>_fix:_ error on send exception message (message is 'undefined')</li>                                                                                                                       |
 
 ## Notices
 
@@ -152,6 +148,6 @@ Please write to [GitHub Issues](https://github.com/TrumanRu/pm2-telegram/issues)
 
 #### Thanks for some ideas to:
 
-* [shubhroshekhar](https://github.com/shubhroshekhar/) (for [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification))
-* [korolyov88](https://github.com/korolyov88/pm2-telegram-notify) (for [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify))
+* [shubhroshekhar](https://github.com/shubhroshekhar/) (author of [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification))
+* [korolyov88](https://github.com/korolyov88/pm2-telegram-notify) (author of [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify))
 
