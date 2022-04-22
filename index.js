@@ -66,7 +66,7 @@ if (isMarkdown) {
 
 console.log('Config:', config);
 
-const titleHtml = `${BOLD_START}${config.title}${BOLD_END}`;
+const titleHtml = `${CODE_START}${config.title}${CODE_END}`;
 const titleLength = config.title.length;
 
 /**
