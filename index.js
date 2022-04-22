@@ -114,7 +114,7 @@ async function queProcessor(runAgain = true) {
 
       const dropCollector = async () => {
         if (collectorLength > 0) {
-          await sendToTelegram(config.bot_token, config.chat_id, collector);
+          await sendToTelegram(config.bot_token, config.chat_id, collector, MESSAGE_FORMAT);
           initCollector();
         }
       }
@@ -151,12 +151,7 @@ async function queProcessor(runAgain = true) {
             }
             const messageText = msgText.substring(nextPos, nextPos + cutLength);
             nextPos = nextPos + cutLength;
-            await sendToTelegram(
-              config.bot_token,
-              config.chat_id,
-              messageStart + messageText + messageEnd,
-              MESSAGE_FORMAT
-            );
+            await sendToTelegram(config.bot_token, config.chat_id, messageStart + messageText + messageEnd, MESSAGE_FORMAT);
             messageStart = '...';
           } while (nextPos >= msgLength);
         } else if (config.collate) {
