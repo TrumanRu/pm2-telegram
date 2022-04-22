@@ -14,9 +14,10 @@
 * format messages for better viewing
 
 #### Examples
-
-![](./docs/message-unformatted.png "Unformatted message")
-![](./docs/message-formatted.png "Formatted message")
+###### Unformatted
+![](./docs/message-unformatted.jpg "Unformatted message")
+###### Formatted
+![](./docs/message-formatted.jpg "Formatted message")
 
 #### Roadmap
 
@@ -49,7 +50,7 @@
                     "is_bot": false,
                     "first_name": "Hildur",
                     "last_name": "Bock",
-                    "username": "frokenbock"
+                    "username": "fröken_bock"
                 },
                 "chat": {
                     "id": -76543210, // <- this is chat_id!
@@ -131,14 +132,15 @@ pm2 install pm2-telegram@latest
 
 ## Releases
 
-| version    | changes                                                                                                                                                                                        |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **0.2.0**  | <li>_feature_: add option `text_format` to format notification messages</li><li>_fix_: mistaken truncate messages on `&` character</li>                                                        |
-| **0.1.12** | <li>documentation update</li>                                                                                                                                                                  |
-| **0.1.11** | <li>_feature:_ set default `title` as local server hostname (on upgrade don't forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable)</li> |
-| **0.1.10** | <li>documentation update</li>                                                                                                                                                                  |
-| **0.1.9**  | <li>_fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)</li>                                                                      |
-| **0.1.8**  | <li>_fix:_ error on send exception message (message is 'undefined')</li>                                                                                                                       |
+| version    | changes                                                                                                                                                                                 |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **0.2.1**  | • _docs_: minimize example's image files size                                                                                                                                           |
+| **0.2.0**  | • _feature_: add option `text_format` to format notification messages<br/>• _fix_: mistaken truncate messages on `&` character                                                          |
+| **0.1.12** | • _docs_: documentation update                                                                                                                                                          |
+| **0.1.11** | • _feature:_ set default `title` as local server hostname (on upgrade don't forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable) |
+| **0.1.10** | • _docs_: documentation update                                                                                                                                                          |
+| **0.1.9**  | • _fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)                                                                      |
+| **0.1.8**  | • _fix:_ error on send exception message (message is 'undefined')                                                                                                                       |
 
 ## Notices
 
