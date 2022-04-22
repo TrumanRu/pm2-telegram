@@ -46,12 +46,12 @@ if (config.title) {
 
 const isMarkdown = config.text_format && config.text_format === 'Markdown';
 
-let BOLD_START = ''
-let BOLD_END = '';
+let BOLD_START = '['
+let BOLD_END = ']';
 let ITALIC_START = ''
 let ITALIC_END = '';
-let CODE_START = '';
-let CODE_END = '';
+let CODE_START = '[';
+let CODE_END = ']';
 
 if (isMarkdown) {
   BOLD_START = '**';
@@ -124,7 +124,7 @@ async function queProcessor(runAgain = true) {
       do {
         msg = messagesQue.shift();
         if (!msg) break;
-        const msgAddText = `\n${CODE_START}${msg.process}${CODE_END} - ${BOLD_START}${msg.event}${BOLD_END} - `;
+        const msgAddText = `\n${ITALIC_START}${msg.process}${ITALIC_END} - ${CODE_START}${msg.event}${CODE_END} - `;
         const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + 3;
         const msgText = msgAddText + (msg.description ? msg.description : 'no description');
         const msgLength = msgAddLength + msgText.length;
