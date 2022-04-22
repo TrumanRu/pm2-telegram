@@ -11,7 +11,7 @@
 * truncate long messages (longer than Telegram limitation 4096 characters) to avoid send error
 * combine short messages to one message (the resultant big message shorter than 4096 characters) to avoid impact of Telegram messages frequency limitation (see: [My bot is hitting limits, how do I avoid this?](https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this))
 * set message title for _pm2-telegram_ instance to distinguish messages from one Telegram bot installed on many instances (default is server hostname)
-* format messages for better viewing
+* format messages for better viewing (be aware to face with Markdown characters in raw notification text!)
 
 #### Examples
 ###### Unformatted
@@ -82,8 +82,8 @@
 * set chat id: `pm2 set pm2-telegram:chat_id <CHAT_ID>`
 
 > - for a group's chat id prepend it by `g-` to isolate minus sign, eg:
->   `<br>`group chat _CHAT_ID_ = `-76543210` -> `g-76543210`
->   `<br>`personal chat _CHAT_ID_ = `123456789` -> `123456789`
+>   <br>group chat _CHAT_ID_ = `-76543210` -> `g-76543210`
+>   <br>personal chat _CHAT_ID_ = `123456789` -> `123456789`
 
 ## Configure notifications
 
@@ -92,7 +92,7 @@
 #### Notification options
 
 | option name   | default | description                        |
-| :------------ | :------ |:-----------------------------------|
+|---------------|---------|------------------------------------|
 | **error**     | true    | console.error() and console.warn() |
 | **log**       | false   | console.log()                      |
 | **kill**      | true    | kill PM2 process                   |
@@ -130,6 +130,17 @@ pm2 install pm2-telegram@latest
 
 ---
 
+## Notices
+
+#### Bugs and feature requests
+
+Welcome to [GitHub Issues](https://github.com/TrumanRu/pm2-telegram/issues)!
+
+#### Thanks for some ideas to:
+
+* [shubhroshekhar](https://github.com/shubhroshekhar/) (author of [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification))
+* [korolyov88](https://github.com/korolyov88/pm2-telegram-notify) (author of [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify))
+
 ## Releases
 
 | version    | changes                                                                                                                                                                                 |
@@ -141,15 +152,4 @@ pm2 install pm2-telegram@latest
 | **0.1.10** | • _docs_: documentation update                                                                                                                                                          |
 | **0.1.9**  | • _fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)                                                                      |
 | **0.1.8**  | • _fix:_ error on send exception message (message is 'undefined')                                                                                                                       |
-
-## Notices
-
-#### Bugs and features
-
-Please write to [GitHub Issues](https://github.com/TrumanRu/pm2-telegram/issues)
-
-#### Thanks for some ideas to:
-
-* [shubhroshekhar](https://github.com/shubhroshekhar/) (author of [pm2-telegram-notification](https://github.com/shubhroshekhar/pm2-telegram-notification))
-* [korolyov88](https://github.com/korolyov88/pm2-telegram-notify) (author of [pm2-telegram-notify](https://github.com/korolyov88/pm2-telegram-notify))
 
