@@ -68,8 +68,8 @@ if (isMarkdown || isCode) {
 }
 
 if (isCode) {
-  MESSAGE_START = '```';
-  MESSAGE_END = '```';
+  MESSAGE_START = '```\n';
+  MESSAGE_END = '\n```';
 }
 
 console.log('Config:', config);
