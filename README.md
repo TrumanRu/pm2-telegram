@@ -15,9 +15,9 @@
 
 #### Examples
 ###### Unformatted
-![](https://raw.githubusercontent.com/TrumanRu/cdn/HEAD/pm2-telegram/message-unformatted.jpg "Unformatted message")
+![Unformatted message example](https://raw.githubusercontent.com/TrumanRu/cdn/HEAD/pm2-telegram/message-unformatted.jpg "Unformatted message")
 ###### Formatted
-![](https://raw.githubusercontent.com/TrumanRu/cdn/HEAD/pm2-telegram/message-formatted.jpg "Formatted message")
+![Formatted message example](https://raw.githubusercontent.com/TrumanRu/cdn/HEAD/pm2-telegram/message-formatted.jpg "Formatted message")
 
 #### Roadmap
 
@@ -70,10 +70,11 @@
     }]
 }
 ```
+CHAT_ID is on `result.message.chat.id` property.
 
-* CHAT_ID is on `result.message.chat.id` property
+###### Notice:
 
-> Notice: If you created a group with only you and a bot, but later you'll add a second real user `chat.id` could be changed by Telegram. Check `chat.id` after add second real user!
+> If you in the first created a group with only you and a bot, but later you'll add a second real user `chat.id` could be changed by Telegram. Check `chat.id` after add the second real user!
 
 ### Start module
 
@@ -106,12 +107,12 @@
 
 #### Module description options
 
-| option name     | default            | description                                                                                  |
-|:----------------|:-------------------|:---------------------------------------------------------------------------------------------|
-| **title**       | _server host name_ | messages title (could be used for set server name)                                           |
-| **text_format** | _undefined_        | set 'Markdown' to format messages (be carefully if your messages could be Markdown formatted |
+| option name     | default            | description                                                                                                            |
+|-----------------|--------------------|------------------------------------------------------------------------------------------------------------------------|
+| **title**       | _server host name_ | messages title (could be used for set server name)                                                                     |
+| **text_format** | _undefined_        | 'Markdown' to format messages (be careful if your messages could have Markdown format characters - there'll lost them) |
 
-#### Example
+#### Full configuration example
 
 ```bash
 pm2 set pm2-telegram:title OnTheRoof
@@ -121,6 +122,11 @@ pm2 set pm2-telegram:error true
 pm2 set pm2-telegram:text_format Markdown
 pm2 install pm2-telegram
 ```
+
+#### Reset option
+Use `set` operator without a value to reset option.
+
+For example to clear `text_format` option value use: `pm2 set pm2-telegram:text_format`
 
 ## Upgrade module to the latest version
 
@@ -152,6 +158,5 @@ Welcome to [GitHub Issues](https://github.com/TrumanRu/pm2-telegram/issues)!
 | **0.1.12** | • _docs_: documentation update                                                                                                                                                          |
 | **0.1.11** | • _feature:_ set default `title` as local server hostname (on upgrade don't forget to call `pm2 set pm2-telegram:title` with empty value to reset value stored in PM2 'title' variable) |
 | **0.1.10** | • _docs_: documentation update                                                                                                                                                          |
-| **0.1.9**  | • _fix:_ message type missed in notification title ('error', 'exception' etc.) and messages delimiters (new lines)                                                                      |
+| **0.1.9**  | • _fix:_ message type missed in notification title ('error', 'exception' etc.) and in messages delimiters (new lines)                                                                   |
 | **0.1.8**  | • _fix:_ error on send exception message (message is 'undefined')                                                                                                                       |
-
