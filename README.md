@@ -151,6 +151,7 @@ Welcome to [GitHub Issues](https://github.com/TrumanRu/pm2-telegram/issues)!
 
 | version    | changes                                                                                                                                                                                 |
 |------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **0.2.4**  | • _fix_: remove extra debug message                                                                                                                                                     |
 | **0.2.3**  | • _docs_: remove documentation images from project                                                                                                                                      |
 | **0.2.2**  | • _docs_: documentation corrections                                                                                                                                                     |
 | **0.2.1**  | • _docs_: minimize example's image files size                                                                                                                                           |
