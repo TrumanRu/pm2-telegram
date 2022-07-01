@@ -8,7 +8,9 @@ const pm2 = require('pm2');
 const pmx = require('pmx');
 const os = require('os');
 
-const sendToTelegram = require('./modules/sendToTelegram');
+const { Message } = require('./modules/message');
+const { MessageQue } = require('./modules/message-que');
+const { sendToTelegram } = require('./modules/send-to-telegram');
 
 console.log('Loading module pm2-telegram');
 
@@ -95,8 +97,8 @@ const titleLength = config.title.length + (isMarkdown ? 0 : BOLD_START.length + 
  * @property {number} timestamp
  */
 
-/** @type {QueLogMessage[]} */
-const messagesQue = [];
+/** @type {MessageQue} */
+const messagesQue = new MessageQue();
 let timer = null;
 
 /**
@@ -129,16 +131,17 @@ async function queProcessor(runAgain = true) {
 
       initCollector();
 
-      /** @type {QueLogMessage} */
+      /** @type {Message} */
       let msg = undefined;
       do {
         msg = messagesQue.shift();
         if (!msg) break;
-        const msgAddText = `\n${ITALIC_START}${msg.process}${ITALIC_END} - ${BOLD_START}${msg.event}${BOLD_END} - `;
-        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + 3
+        const msgAddText = `\n${ITALIC_START}${msg.process}${ITALIC_END} - ${BOLD_START}${msg.event}${BOLD_END}${isCode ? '' : ' - '}`;
+        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + (isCode ? 0 : 3)
           + (isMarkdown || isCode ? 0 : ITALIC_START.length + ITALIC_END.length + BOLD_START.length + BOLD_END.length);
-        const msgText = msgAddText + MESSAGE_START + (msg.description ? msg.description : 'no description') + MESSAGE_END;
+        let msgText = MESSAGE_START + (msg.description ? msg.description : 'no description') + MESSAGE_END;
         const msgLength = msgAddLength + msgText.length;
+        msgText = msgAddText + msgText;
 
         // send collector if overflow is awaiting
         if (config.collate && collectorLength > 0 && titleLength + collectorLength + msgLength > MAX_MESSAGE_LENGTH) {
@@ -191,11 +194,11 @@ async function queProcessor(runAgain = true) {
  */
 function addMessageToQue(message) {
   if (!config.chat_id || !config.bot_token) {
-    // do not collect without setup data
+    // do not collect messages if setup data absent
     return;
   }
   if (message.process !== config.module_name) {
-    messagesQue.push(message);
+    messagesQue.push(new Message(message));
   }
 }
 
