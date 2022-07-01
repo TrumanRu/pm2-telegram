@@ -1,3 +1,5 @@
+'use strict';
+
 const http = require('https');
 
 /**
@@ -7,12 +9,12 @@ const http = require('https');
  * @param {'Markdown'|'HTML'} textFormat
  * @returns {Promise<unknown>}
  */
-module.exports = async function sendToTelegram(botToken, chatId, message, textFormat = undefined) {
+async function sendToTelegram(botToken, chatId, message, textFormat = undefined) {
   let postData = `chat_id=${chatId}&text=${encodeURIComponent(message)}`;
   if (textFormat === 'Markdown' || textFormat === 'HTML') {
     postData += `&parse_mode=${textFormat}`;
   }
-  console.log('TELEGRAM_SEND_DEBUG', postData, '\nARGUMENTS', ...arguments);
+  //console.log('TELEGRAM_SEND_DEBUG', postData, '\nARGUMENTS', ...arguments);
   /** @Type {https.RequestOptions} */
   const options = {
     hostname: 'api.telegram.org',
@@ -62,3 +64,7 @@ module.exports = async function sendToTelegram(botToken, chatId, message, textFo
     }
   });
 }
+
+module.exports = {
+  sendToTelegram,
+};

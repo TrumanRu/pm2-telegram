@@ -8,7 +8,9 @@ const pm2 = require('pm2');
 const pmx = require('pmx');
 const os = require('os');
 
-const sendToTelegram = require('./modules/sendToTelegram');
+const { Message } = require('./modules/message');
+const { MessageQue } = require('./modules/message-que');
+const { sendToTelegram } = require('./modules/send-to-telegram');
 
 console.log('Loading module pm2-telegram');
 
@@ -44,7 +46,8 @@ if (config.title) {
   config.title = os.hostname();
 }
 
-const isMarkdown = config.text_format && config.text_format === 'Markdown';
+const isMarkdown = config.text_format && config.text_format.toString().toLowerCase() === 'markdown';
+const isCode = config.text_format && config.text_format.toString().toLowerCase() === 'code';
 
 let BOLD_START = '['
 let BOLD_END = ']';
@@ -52,9 +55,11 @@ let ITALIC_START = ''
 let ITALIC_END = '';
 let CODE_START = '[';
 let CODE_END = ']';
+let MESSAGE_START = '';
+let MESSAGE_END = '';
 let MESSAGE_FORMAT = undefined;
 
-if (isMarkdown) {
+if (isMarkdown || isCode) {
   BOLD_START = '*';
   BOLD_END = '*';
   ITALIC_START = '_'
@@ -62,6 +67,11 @@ if (isMarkdown) {
   CODE_START = '`';
   CODE_END = '`';
   MESSAGE_FORMAT = 'Markdown';
+}
+
+if (isCode) {
+  MESSAGE_START = '```\n';
+  MESSAGE_END = '\n```';
 }
 
 console.log('Config:', config);
@@ -87,8 +97,8 @@ const titleLength = config.title.length + (isMarkdown ? 0 : BOLD_START.length + 
  * @property {number} timestamp
  */
 
-/** @type {QueLogMessage[]} */
-const messagesQue = [];
+/** @type {MessageQue} */
+const messagesQue = new MessageQue();
 let timer = null;
 
 /**
@@ -98,8 +108,8 @@ let timer = null;
 async function queProcessor(runAgain = true) {
   try {
     if (!config.chat_id || !config.bot_token) {
-      console.warn(`'bot_token' and 'chat_id' are required parameters for pm2-telegram`);
-      return;
+      console.warn(`'bot_token' and 'chat_id' are required parameters for pm2-telegram module`);
+      return; // queProcessor stopped
     }
 
     if (messagesQue.length > 0) {
@@ -121,16 +131,17 @@ async function queProcessor(runAgain = true) {
 
       initCollector();
 
-      /** @type {QueLogMessage} */
+      /** @type {Message} */
       let msg = undefined;
       do {
         msg = messagesQue.shift();
         if (!msg) break;
-        const msgAddText = `\n${ITALIC_START}${msg.process}${ITALIC_END} - ${BOLD_START}${msg.event}${BOLD_END} - `;
-        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + 3
-          + (isMarkdown ? 0 : ITALIC_START.length + ITALIC_END.length + BOLD_START.length + BOLD_END.length);
-        const msgText = msgAddText + (msg.description ? msg.description : 'no description');
+        const msgAddText = `\n${ITALIC_START}${msg.process}${ITALIC_END} - ${BOLD_START}${msg.event}${BOLD_END}${isCode ? '' : ' - '}`;
+        const msgAddLength = BR_LENGTH + msg.process.length + 3 + msg.event.length + (isCode ? 0 : 3)
+          + (isMarkdown || isCode ? 0 : ITALIC_START.length + ITALIC_END.length + BOLD_START.length + BOLD_END.length);
+        let msgText = MESSAGE_START + (msg.description ? msg.description : 'no description') + MESSAGE_END;
         const msgLength = msgAddLength + msgText.length;
+        msgText = msgAddText + msgText;
 
         // send collector if overflow is awaiting
         if (config.collate && collectorLength > 0 && titleLength + collectorLength + msgLength > MAX_MESSAGE_LENGTH) {
@@ -183,11 +194,11 @@ async function queProcessor(runAgain = true) {
  */
 function addMessageToQue(message) {
   if (!config.chat_id || !config.bot_token) {
-    // do not collect without setup data
+    // do not collect messages if setup data absent
     return;
   }
   if (message.process !== config.module_name) {
-    messagesQue.push(message);
+    messagesQue.push(new Message(message));
   }
 }
 
