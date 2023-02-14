@@ -1,6 +1,6 @@
 const { MessageQueue } = require('../modules/message-queue');
 const { Message } = require('../modules/message');
-const { whitelist, blacklist, whitelisted, blacklisted } = require('./message-queue-include.fixtures');
+const { whitelist, blacklist, whitelisted, blacklisted } = require('./fixtures/message-queue-include.fixtures');
 
 describe('Verify MessageQue functionality', () => {
 

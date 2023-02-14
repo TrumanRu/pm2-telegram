@@ -1,9 +1,10 @@
-import pm2 from 'pm2';
-import { Config } from './modules/config';
-import { MessageQueue } from './modules/message-queue'
-import { Message } from './modules/message';
+const pm2 = require('pm2');
+const { Config } = require('./modules/config');
+const { MessageQueue } = require('./modules/message-queue');
+const { Message } = require('./modules/message');
+const pmx = require('pmx');
 
-const config = new Config();
+const config = new Config(/** @type PackageConfig */ pmx.initModule());
 const queue = new MessageQueue();
 
 let timer = null;
@@ -53,7 +54,7 @@ pm2.launchBus(function (err, bus) {
 /**
  * Catch this module kill event
  */
-process.on('SIGINT', async function() {
+process.on('SIGINT', async () => {
   try {
     if (timer) {
       clearTimeout(timer);
