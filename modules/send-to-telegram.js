@@ -14,6 +14,7 @@ async function sendToTelegram(botToken, chatId, message, textFormat = undefined)
   if (textFormat === 'Markdown' || textFormat === 'HTML') {
     postData += `&parse_mode=${textFormat}`;
   }
+
   //console.log('TELEGRAM_SEND_DEBUG', postData, '\nARGUMENTS', ...arguments);
   /** @Type {https.RequestOptions} */
   const options = {
@@ -26,13 +27,14 @@ async function sendToTelegram(botToken, chatId, message, textFormat = undefined)
       'Content-Length': Buffer.byteLength(postData)
     }
   };
+
   return new Promise((resolve, reject) => {
     try {
       const req = http.request(options, (res) => {
-        const responseBody = [];
         res.setEncoding('utf8');
 
         // collect response data
+        const responseBody = [];
         res.on('data', (chunk) => {
           responseBody.push(chunk);
         });

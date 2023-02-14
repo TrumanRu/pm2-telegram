@@ -3,8 +3,12 @@
   "version": "0.2.4",
   "description": "Telegram notifications for PM2 process manager",
   "main": "index.js",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:cov": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -21,8 +25,11 @@
   },
   "homepage": "https://github.com/TrumanRu/pm2-telegram#readme",
   "dependencies": {
-    "pm2": "^5.2.0",
-    "pmx": "^1.2.0"
+    "pm2": "^5.0.0",
+    "pmx": "^1.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.4.2"
   },
   "config": {
     "title": "",
@@ -33,6 +40,8 @@
     "exception": true,
     "bot_token": "",
     "chat_id": "",
-    "text_format": ""
+    "text_format": "",
+    "whitelist": "",
+    "blacklist": ""
   }
 }
