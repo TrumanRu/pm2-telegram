@@ -1,5 +1,7 @@
 'use strict';
 
+const { ConfigTextFormat } = require('./config-text-format');
+
 /**
  * Get configuration from PM2
  * @typedef PackageConfig
@@ -15,6 +17,10 @@
  * @property {string} process_white - list of processes to only include in log forwarding
  * @property {string} process_black - list of processes to exclude from logging (ignoring if whitelist is not empty)
  */
+
+/**
+ * @type {PackageConfig}
+ */
 class Config {
   /**
    * @param {PackageConfig} packageConfig
@@ -28,11 +34,14 @@ class Config {
    */
   init(configObject) {
     Object.assign(this, configObject);
+
     this.processesWhitelist = this.process_white ? this.process_white.split(',') : [];
     this.processesBlacklist = this.process_black ? this.process_black.split(',') : [];
+
+    this._textFormat = new ConfigTextFormat(this.text_format);
   }
 }
 
 module.exports = {
   Config,
-};
+}

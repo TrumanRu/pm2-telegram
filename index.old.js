@@ -10,7 +10,7 @@ const os = require('os');
 
 const { Message } = require('./modules/message');
 const { MessageQue } = require('./modules/message-queue');
-const { sendToTelegram } = require('./modules/send-to-telegram');
+const { sendToTelegram } = require('./modules/telegram-sender');
 
 console.log('Loading module pm2-telegram');
 
@@ -163,7 +163,7 @@ async function queProcessor(runAgain = true) {
             }
             const messageText = msgText.substring(nextPos, nextPos + cutLength);
             nextPos = nextPos + cutLength;
-            await sendToTelegram(config.bot_token, config.chat_id, messageStart + messageText + messageEnd, MESSAGE_FORMAT);
+            await sendToTelegram(config.bot_token, config.chat_id, messageStart + messageText + messageEnd);
             messageStart = '...';
           } while (nextPos >= msgLength);
         } else if (config.collate) {
@@ -175,7 +175,7 @@ async function queProcessor(runAgain = true) {
             collectorLength += msgLength;
           }
         } else {
-          await sendToTelegram(config.bot_token, config.chat_id, titleHtml + msgText, MESSAGE_FORMAT);
+          await sendToTelegram(config.bot_token, config.chat_id, titleHtml + msgText);
         }
       } while (msg);
       await dropCollector();

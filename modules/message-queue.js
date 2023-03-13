@@ -40,7 +40,7 @@ class MessageQueue {
   /**
    * @returns {Message}
    */
-  shift() {
+  next() {
     return this.values.shift();
   }
 }
