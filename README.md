@@ -38,7 +38,7 @@
 * send message from group to the bot: `/test Hello bot!` (use any command-like message started by slash)
 * open sent message at `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
 
-```javascript
+```json5
 {
     "ok": true,
     "result": [{
@@ -151,6 +151,7 @@ Welcome to [GitHub Issues](https://github.com/TrumanRu/pm2-telegram/issues)!
 
 | version    | changes                                                                                                                                                                                 |
 |------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **0.3.0**  | • _fix_: fix losing last parts of divided long messages<br/>• _tests_: add some unit test                                                                                               |
 | **0.2.4**  | • _fix_: remove extra debug message                                                                                                                                                     |
 | **0.2.3**  | • _docs_: remove documentation images from project                                                                                                                                      |
 | **0.2.2**  | • _docs_: documentation corrections                                                                                                                                                     |
