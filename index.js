@@ -2,18 +2,22 @@ const pm2 = require('pm2');
 const { Config } = require('./modules/config');
 const { MessageQueue } = require('./modules/message-queue');
 const { Message } = require('./modules/message');
+const { QueueProcessor } = require("./modules/queue-processor");
 const pmx = require('pmx');
 
+/** @type Config */
 const config = new Config(/** @type PackageConfig */ pmx.initModule());
 const queue = new MessageQueue();
+const queueProcessor = new QueueProcessor();
 
-let timer = null;
+const QUEUE_PROCESS_INTERVAL = 10000;
 
 /**
  * Start listening on the PM2 BUS
  */
 pm2.launchBus(function (err, bus) {
   try {
+    console.log('Entered...')
     if (config.error) bus.on('log:err', /** @param {PmLogMessage} data */(data) => queue.push({
       process: data.process.name,
       event: 'error',
@@ -45,9 +49,13 @@ pm2.launchBus(function (err, bus) {
         timestamp: data.at,
       }))
     });
-    timer = setTimeout(queProcessor, QUE_PROCESS_INTERVAL);
+    queueProcessor.start(1000);
+    console.log('PM2 Telegram Logger started')
   } catch (e) {
-    throw new e;
+    if (e instanceof Error) {
+      throw new e;
+    }
+    throw new Error(e.toString());
   }
 });
 
@@ -56,11 +64,7 @@ pm2.launchBus(function (err, bus) {
  */
 process.on('SIGINT', async () => {
   try {
-    if (timer) {
-      clearTimeout(timer);
-    }
-    console.log('Finishing tasks...');
-    await queProcessor(false);
+    await queueProcessor.shutdown(false);
   } catch (e) {
     console.error(e);
     process.exit(1);

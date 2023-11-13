@@ -1,0 +1,13 @@
+@startuml
+(*) --> FFF
+@enduml
+
+@startuml
+participant message order 10
+participant MessageQueue order 20
+participant Timer order 30
+
+message -> MessageQueue
+Timer --> MessageQueue: every 10 seconds
+
+@enduml

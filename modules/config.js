@@ -3,8 +3,9 @@
 const { ConfigTextFormat } = require('./config-text-format');
 
 /**
- * Get configuration from PM2
+ * PM2 config section in package.json
  * @typedef PackageConfig
+ * @type Class
  * @property {string} title - name of the server/process
  * @property {boolean} collate - collect multiple buffered messages into one message (with length less than Telegram max message length)
  * @property {boolean} log - notify on console.log() event
@@ -16,6 +17,11 @@ const { ConfigTextFormat } = require('./config-text-format');
  * @property {string} text_format - set 'Markdown' to format send messages
  * @property {string} process_white - list of processes to only include in log forwarding
  * @property {string} process_black - list of processes to exclude from logging (ignoring if whitelist is not empty)
+ */
+
+/**
+ * @typedef Config
+ * @extends PackageConfig
  */
 
 /**
@@ -34,11 +40,12 @@ class Config {
    */
   init(configObject) {
     Object.assign(this, configObject);
+    const { process_white, process_black, text_format } = configObject;
 
-    this.processesWhitelist = this.process_white ? this.process_white.split(',') : [];
-    this.processesBlacklist = this.process_black ? this.process_black.split(',') : [];
+    this.process_white = process_white ? process_white.split(',') : [];
+    this.process_black = process_black ? process_black.split(',') : [];
 
-    this._textFormat = new ConfigTextFormat(this.text_format);
+    this.text_format_config = new ConfigTextFormat(text_format);
   }
 }
 

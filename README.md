@@ -112,6 +112,13 @@ CHAT_ID is on `result.message.chat.id` property.
 | **title**       | _server host name_ | messages title (could be used for set server name)                                                                     |
 | **text_format** | _undefined_        | 'Markdown' to format messages (be careful if your messages could have Markdown format characters - there'll lost them) |
 
+#### Processes white/black lists
+
+| option name         | default     | description                                                                                                            |
+|---------------------|-------------|------------------------------------------------------------------------------------------------------------------------|
+| **processes_white** | _undefined_ | messages title (could be used for set server name)                                                                     |
+| **processes_black** | _undefined_ | 'Markdown' to format messages (be careful if your messages could have Markdown format characters - there'll lost them) |
+
 #### Full configuration example
 
 ```bash

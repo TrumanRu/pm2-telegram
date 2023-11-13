@@ -1,13 +1,14 @@
 /**
  *
  * @typedef TextFormat
- * @type {{CODE_END: string, BOLD_END: string, ITALIC_END: string, ITALIC_START: string, CODE_START: string, BOLD_START: string, MESSAGE_START: string, MESSAGE_END: string}}
+ * @type {{CODE_END: string, BOLD_END: string, ITALIC_END: string, ITALIC_START: string, CODE_START: string,
+ *         BOLD_START: string, MESSAGE_START: string, MESSAGE_END: string}}
  */
 
 /**
  * @type {TextFormat}
  */
-const plainFormat = {
+const PlainFormat = {
   BOLD_START: '[',
   BOLD_END: ']',
   ITALIC_START: '',
@@ -21,7 +22,7 @@ const plainFormat = {
 /**
  * @type {TextFormat}
  */
-const markdownFormat = {
+const MarkdownFormat = {
   BOLD_START: '*',
   BOLD_END: '*',
   ITALIC_START: '_',
@@ -43,22 +44,19 @@ class ConfigTextFormat {
   constructor(formatName) {
     this.formatName = formatName.toString().toLowerCase();
 
+    /** @type TextFormat */
+    let format;
+
     switch (this.formatName) {
       case 'markdown':
       case 'code':
-        this.init(markdownFormat);
+        format = MarkdownFormat;
         break;
       default:
         this.formatName = 'plain';
-        this.init(plainFormat);
+        format = PlainFormat;
     }
-  }
-
-  /**
-   * @param {TextFormat} formatConfig
-   */
-  init(formatConfig) {
-    Object.assign(this, formatConfig);
+    Object.assign(this, format);
   }
 }
 

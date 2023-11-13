@@ -5,10 +5,11 @@ class Message {
    * @param {{process: string, event: string, description: string, [timestamp]: number}} message
    */
   constructor(message) {
-    this.process = message.process;
-    this.event = message.event;
-    this.description = message.description;
-    this.timestamp = message.timestamp || new Date().getTime();
+    const { process, event, description, timestamp } = message;
+    this.process = process;
+    this.event = event;
+    this.description = description;
+    this.timestamp = timestamp || new Date().getTime();
   }
 }
 

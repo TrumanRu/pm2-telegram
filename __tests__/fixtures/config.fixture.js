@@ -16,7 +16,9 @@ const config_1_result = Object.assign(config_1, { processesWhitelist: [], proces
 
 const config_2 = Object.assign(config_1, { process_white: 'white-1,white-2', process_black: 'black-1,black-2,black-3' })
 
-const config_2_result = Object.assign(config_1, { processesWhitelist: ['white-1', 'white-2'], processesBlacklist: ['black-1', 'black-2', 'black-3'] });
+const config_2_result = Object.assign(
+  config_1,
+  { processesWhitelist: ['white-1', 'white-2'], processesBlacklist: ['black-1', 'black-2', 'black-3'] });
 
 
 module.exports = {

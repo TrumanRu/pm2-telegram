@@ -38,6 +38,7 @@ class MessageQueue {
   }
 
   /**
+   * Get next message from queue
    * @returns {Message}
    */
   next() {

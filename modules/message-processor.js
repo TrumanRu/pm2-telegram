@@ -1,3 +1,10 @@
+const MAX_MESSAGE_LENGTH = 4096;
+const BR_LENGTH = '\n'.length;
+
+/**
+ * @typedef MessageProcessorOptions
+ *
+ */
 class MessageProcessor {
   /**
    * @param options

@@ -1,0 +1,20 @@
+const { MessageTransformer } = require('../modules/message-processor');
+
+const processor = new MessageTransformer();
+
+processor.on('data', (chunk) => {
+  console.log('DATA:', chunk);
+});
+
+processor.on('end', () => {
+  console.log('EOS');
+});
+
+let counter = 1;
+
+processor.write(`Message ${counter++}`);
+
+setInterval(() => {
+  console.log('next...')
+  processor.write(`Message ${counter++}`);
+}, 2000)
