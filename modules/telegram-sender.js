@@ -3,10 +3,6 @@
 const https = require('https');
 
 class TelegramSender {
-  constructor() {
-
-  }
-
   /**
    * @param {string} botToken
    * @param {string} chatId

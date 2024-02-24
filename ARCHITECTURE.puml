@@ -1,13 +1,16 @@
 @startuml
-(*) --> FFF
-@enduml
-
-@startuml
-participant message order 10
+participant apps order 10
 participant MessageQueue order 20
-participant Timer order 30
+participant QueueProcessor order 30
+participant TelegramSender order 40
 
-message -> MessageQueue
-Timer --> MessageQueue: every 10 seconds
+
+apps -> MessageQueue: message1
+apps -> MessageQueue: message2
+apps -> MessageQueue: messageN
+QueueProcessor --> MessageQueue: every 10 seconds
+MessageQueue <-
+
+apps -> MessageQueue: messageN+1
 
 @enduml

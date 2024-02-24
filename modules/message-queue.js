@@ -2,16 +2,12 @@
 
 class MessageQueue {
   /**
-   * @param {string[]} [whitelist]
-   * @param {string[]} [blacklist]
+   * @param {Config} config
    */
-  constructor({
-    whitelist,
-    blacklist,
-  } = {}) {
+  constructor(config) {
     this.values = [];
-    this.whitelist = whitelist;
-    this.blacklist = blacklist;
+    this.whitelist = config.white_list_config;
+    this.blacklist = config.black_list_config;
   }
 
   /**

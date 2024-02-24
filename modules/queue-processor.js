@@ -1,8 +1,14 @@
 class QueueProcessor {
-  constructor() {
+  /**
+   * @param {Config} config
+   * @param {MessageQueue} queue
+   * @param {MessageComposer} composer
+   */
+  constructor(config, queue, composer) {
+    this.queue = queue;
     this.timer = null;
     this.counter = 0;
-    this.interval = 10000;
+    this.interval = config.send_interval;
   }
 
   start(interval) {

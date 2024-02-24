@@ -4,20 +4,20 @@ const { MessageQueue } = require('./modules/message-queue');
 const { Message } = require('./modules/message');
 const { QueueProcessor } = require("./modules/queue-processor");
 const pmx = require('pmx');
+const { MessageComposer } = require('./modules/message-composer');
 
 /** @type Config */
 const config = new Config(/** @type PackageConfig */ pmx.initModule());
-const queue = new MessageQueue();
-const queueProcessor = new QueueProcessor();
-
-const QUEUE_PROCESS_INTERVAL = 10000;
+const queue = new MessageQueue(config);
+const composer = new MessageComposer();
+const queueProcessor = new QueueProcessor(config, queue);
 
 /**
  * Start listening on the PM2 BUS
  */
 pm2.launchBus(function (err, bus) {
   try {
-    console.log('Entered...')
+    console.log('Starting the Bus...')
     if (config.error) bus.on('log:err', /** @param {PmLogMessage} data */(data) => queue.push({
       process: data.process.name,
       event: 'error',

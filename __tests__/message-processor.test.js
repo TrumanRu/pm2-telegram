@@ -1,4 +1,4 @@
-const { MessageTransformer } = require('../modules/message-processor');
+const { MessageTransformer } = require('../modules/message-composer');
 
 const processor = new MessageTransformer();
 

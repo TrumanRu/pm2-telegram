@@ -101,31 +101,34 @@ CHAT_ID is on `result.message.chat.id` property.
 
 #### Module behavior options
 
-| option name | default | description                                    |
-|-------------|---------|------------------------------------------------|
-| **collate** | true    | combine short messages to one Telegram message |
+| option name       | default | description                                    |
+|-------------------|---------|------------------------------------------------|
+| **collate**       | true    | combine short messages to one Telegram message |
+| **send_interval** | 10      | interval between send tries (seconds)          |
 
 #### Module description options
 
 | option name     | default            | description                                                                                                            |
 |-----------------|--------------------|------------------------------------------------------------------------------------------------------------------------|
 | **title**       | _server host name_ | messages title (could be used for set server name)                                                                     |
-| **text_format** | _undefined_        | 'Markdown' to format messages (be careful if your messages could have Markdown format characters - there'll lost them) |
+| **text_format** | _simple text_      | 'Markdown' to format messages (be careful if your messages could have Markdown format characters - there'll lost them) |
 
 #### Processes white/black lists
 
-| option name         | default     | description                                                                                                            |
-|---------------------|-------------|------------------------------------------------------------------------------------------------------------------------|
-| **processes_white** | _undefined_ | messages title (could be used for set server name)                                                                     |
-| **processes_black** | _undefined_ | 'Markdown' to format messages (be careful if your messages could have Markdown format characters - there'll lost them) |
+| option name           | default     | description                                                                                                            |
+|-----------------------|-------------|------------------------------------------------------------------------------------------------------------------------|
+| **process_whitelist** | _undefined_ | messages title (could be used for set server name)                                                                     |
+| **process_blacklist** | _undefined_ | 'Markdown' to format messages (be careful if your messages could have Markdown format characters - there'll lost them) |
 
-#### Full configuration example
+#### Configuration example
 
 ```bash
-pm2 set pm2-telegram:title OnTheRoof
 pm2 set pm2-telegram:bot_token 223322223322:ABCDefghIJKLmnop12345rStUvWxYz67890
 pm2 set pm2-telegram:chat_id g-76543210
 pm2 set pm2-telegram:error true
+pm2 set pm2-telegram:exception true
+pm2 set pm2-telegram:collate true
+pm2 set pm2-telegram:title OnTheRoof
 pm2 set pm2-telegram:text_format Markdown
 pm2 install pm2-telegram
 ```

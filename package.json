@@ -36,16 +36,17 @@
     "jest": "^29.6.4"
   },
   "config": {
+    "bot_token": "",
+    "chat_id": "",
+    "text_format": "",
     "title": "",
     "collate": true,
+    "send_interval": 10,
     "log": false,
     "error": true,
     "kill": true,
     "exception": true,
-    "bot_token": "",
-    "chat_id": "",
-    "text_format": "",
-    "process_white": "",
-    "process_black": ""
+    "process_whitelist": "",
+    "process_blacklist": ""
   }
 }
