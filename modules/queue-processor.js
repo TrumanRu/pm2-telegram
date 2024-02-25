@@ -1,16 +1,20 @@
 class QueueProcessor {
   /**
-   * @param {Config} config
+   * @param {ModuleConfig} config
    * @param {MessageQueue} queue
    * @param {MessageComposer} composer
    */
   constructor(config, queue, composer) {
     this.queue = queue;
+    this.composer = composer;
     this.timer = null;
     this.counter = 0;
     this.interval = config.send_interval;
   }
 
+  /**
+   * @param {number} [interval]
+   */
   start(interval) {
     if (this.timer) {
       clearTimeout(this.timer);
@@ -20,6 +24,13 @@ class QueueProcessor {
     }
     this.timer = setTimeout(this.tick.bind(this), this.interval);
     console.log('TIMER:', this.timer);
+  }
+
+  /**
+   * @param message
+   */
+  push(message) {
+    this.queue.push(message);
   }
 
   tick() {

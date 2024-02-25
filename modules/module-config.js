@@ -27,8 +27,10 @@ const { ConfigTextFormat } = require('./config-text-format');
  * @returns {string[]}
  */
 function getProcessList(list) {
-  return list.split(',').reduce(/** @param {string[]} acc */ (acc, value) => {
-    const tmpValue = value.trim()
+  return list.split(',').reduce(/** @param {string[]} acc
+   * @param {string} value
+   */ (acc, value) => {
+    const tmpValue = value.trim();
     if (tmpValue.length > 0) {
       acc.push(tmpValue);
     }
@@ -37,9 +39,10 @@ function getProcessList(list) {
 }
 
 /**
- * @type {PackageConfig}
+ * @class ModuleConfig
+ * @extends PackageConfig
  */
-class Config {
+class ModuleConfig {
   /**
    * @param {PackageConfig} packageConfig
    */
@@ -66,5 +69,5 @@ class Config {
 }
 
 module.exports = {
-  Config,
+  ModuleConfig,
 }

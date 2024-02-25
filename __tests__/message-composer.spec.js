@@ -1,6 +1,6 @@
-const { MessageTransformer } = require('../modules/message-composer');
+const { MessageComposer } = require('../modules/message-composer');
 
-const processor = new MessageTransformer();
+const processor = new MessageComposer();
 
 processor.on('data', (chunk) => {
   console.log('DATA:', chunk);
